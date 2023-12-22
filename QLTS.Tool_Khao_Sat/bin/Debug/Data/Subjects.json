@@ -1,0 +1,76 @@
+{
+	"Data":
+	[
+	{
+		"SubjectName": "Nguyên giá của TS trên màn hình danh sách bị null",
+		"ScriptSurvey": "SELECT count(*) as Total\r\nFROM fixed_asset fa\r\nWHERE fa.orgprice IS NULL AND IFNULL(fa.is_parent,0) = 0 AND fa.status_id <> 2;",
+		"ScriptExecute": "UPDATE fixed_asset fa\r\nINNER JOIN\r\n(\r\n  SELECT SUM(amount) AS Total, lb.fixed_asset_id\r\n  FROM ledger_budget lb INNER JOIN\r\n  (\r\n    SELECT * FROM\r\n    (\r\n      SELECT l.fixed_asset_id, IFNULL(l.voucher_id, '') AS voucher_id,\r\n      ROW_NUMBER() OVER(PARTITION BY fixed_asset_id ORDER BY change_date DESC, created_date DESC) AS STT\r\n      FROM ledger_budget l\r\n      WHERE IFNULL(voucher_type, 1) IN (1,2,8)\r\n    ) A WHERE A.STT = 1\r\n  ) A2 ON lb.fixed_asset_id = A2.fixed_asset_id AND IFNULL(lb.voucher_id, '') = A2.voucher_id\r\n  GROUP BY lb.fixed_asset_id\r\n) G1 ON fa.fixed_asset_id = G1.fixed_asset_id\r\nset fa.orgprice = G1.Total,\r\nfa.remaining_amount = G1.Total - IFNULL(fa.accum_depreciation_amount,0)\r\nWHERE fa.orgprice IS NULL;"
+	},
+	{
+		"SubjectName": "Tài sản mất hết nguồn trong chi tiết tài sản (ledger_budget)",
+		"ScriptSurvey": "SELECT\r\nCOUNT(*) as Total\r\nFROM fixed_asset a\r\nLEFT JOIN\r\n(SELECT fixed_asset_id\r\n FROM ledger_budget\r\n GROUP BY fixed_asset_id\r\n) b ON a.fixed_asset_id = b.fixed_asset_id\r\nWHERE IFNULL(a.is_parent,0) = 0 AND b.fixed_asset_id IS NULL AND a.status_id <> 2;",
+		"ScriptExecute": "CALL Proc_Jira_UpdateLedgerBudgetDMissByTenant();"
+	},
+	{
+		"SubjectName": "Xóa chứng từ điều chuyển CCDC nhưng chưa xóa trong ledger",
+		"ScriptSurvey": "SELECT count(*) AS Total\r\nFROM equipment_ledger fal\r\nLEFT JOIN equipment_transfer fat ON fal.voucher_id = fat.voucher_id\r\nWHERE fal.voucher_type IN (3,7) AND fat.voucher_id IS NULL;",
+		"ScriptExecute": "DELETE fal\r\nFROM equipment_ledger fal\r\nLEFT JOIN equipment_transfer fat ON fat.voucher_id = fal.voucher_id\r\nWHERE fal.voucher_type IN (3,7) AND fat.voucher_id IS NULL;\r\n"
+	},
+	{
+		"SubjectName": "Tài sản mất thông tin nhóm loại tài sản",
+		"ScriptSurvey": "SELECT count(*) as Total\r\nFROM fixed_asset fa INNER JOIN dic_organization do ON fa.organization_id = do.organization_id\r\nWHERE fa.group_fixed_asset_category_id IS NULL AND fa.depreciation_rate IS NOT NULL AND fa.fixed_asset_category_id IS NOT NULL\r\nAND IFNULL(fa.is_parent,0) = 0 AND fa.status_id <> 2;",
+		"ScriptExecute": "UPDATE fixed_asset fa\r\nINNER JOIN dic_fixed_asset_category dfac ON fa.fixed_asset_category_id = dfac.fixed_asset_category_id\r\nSET fa.group_fixed_asset_category_id = dfac.group_fixed_asset_category_id\r\nWHERE fa.group_fixed_asset_category_id is NULL  AND IFNULL(fa.is_parent,0) = 0;"
+	},
+	{
+		"SubjectName": "Tài sản có phòng ban bị trống",
+		"ScriptSurvey": "SELECT count(*) as Total\r\nFROM fixed_asset fa\r\nWHERE ifnull(fa.is_parent,0) = 0 AND ifnull(fa.department_id,'') = '' AND IFNULL(fa.fixed_asset_code,'') <> '';",
+		"ScriptExecute": ""
+	},
+	{
+		"SubjectName": "Tài sản bị âm giá trị còn lại ở màn hình danh sách",
+		"ScriptSurvey": "SELECT count(*) as Total\r\nFROM fixed_asset fa \r\nINNER JOIN dic_organization do ON fa.organization_id = do.organization_id\r\nWHERE fa.remaining_amount < 0 AND IFNULL(fa.is_parent,0) = 0;",
+		"ScriptExecute": ""
+	},
+	{
+		"SubjectName": "Dữ liệu ledger và tài sản có nhiều convert_circular_id",
+		"ScriptSurvey": "SELECT count(*) as Total\r\nFROM fixed_asset fa\r\nINNER JOIN fixed_asset_ledger fal ON fa.organization_id = fal.organization_id and fa.fixed_asset_id = fal.fixed_asset_id\r\nWHERE fa.convert_circular_id <> fal.convert_circular_id\r\nGROUP BY fa.fixed_asset_id;",
+		"ScriptExecute": "UPDATE fixed_asset_ledger fal\r\nINNER JOIN fixed_asset T\r\nON fal.fixed_asset_id = T.fixed_asset_id\r\nSET fal.convert_circular_id = T.convert_circular_id,\r\nfal.fixed_asset_category_id = T.fixed_asset_category_id,\r\nfal.fixed_asset_category_code = T.fixed_asset_category_code,\r\nfal.fixed_asset_category_name = T.fixed_asset_category_name;\r\n\r\nUPDATE fa_ledger_change_info fal\r\nINNER JOIN fixed_asset T\r\nON fal.fixed_asset_id = T.fixed_asset_id\r\nSET fal.convert_circular_id = T.convert_circular_id,\r\nfal.fixed_asset_category_id = T.fixed_asset_category_id,\r\nfal.fixed_asset_category_code = T.fixed_asset_category_code,\r\nfal.fixed_asset_category_name = T.fixed_asset_category_name;\r\n\r\nUPDATE fa_ledger_increment_and_decrement fal\r\nINNER JOIN fixed_asset T\r\nON fal.fixed_asset_id = T.fixed_asset_id\r\nSET fal.convert_circular_id = T.convert_circular_id,\r\nfal.fixed_asset_category_id = T.fixed_asset_category_id,\r\nfal.fixed_asset_category_code = T.fixed_asset_category_code,\r\nfal.fixed_asset_category_name = T.fixed_asset_category_name;\r\n\r\nUPDATE fa_ledger_inventory fal\r\nINNER JOIN fixed_asset T\r\nON fal.fixed_asset_id = T.fixed_asset_id\r\nSET fal.convert_circular_id = T.convert_circular_id,\r\nfal.fixed_asset_category_id = T.fixed_asset_category_id,\r\nfal.fixed_asset_category_code = T.fixed_asset_category_code,\r\nfal.fixed_asset_category_name = T.fixed_asset_category_name;\r\n\r\nUPDATE fa_ledger_revaluation_detail fal\r\nINNER JOIN fixed_asset T\r\nON fal.fixed_asset_id = T.fixed_asset_id\r\nSET fal.convert_circular_id = T.convert_circular_id,\r\nfal.fixed_asset_category_id = T.fixed_asset_category_id,\r\nfal.fixed_asset_category_code = T.fixed_asset_category_code,\r\nfal.fixed_asset_category_name = T.fixed_asset_category_name;"
+	},
+	{
+		"SubjectName": "Thông tư của loại tài sản với tài sản lệch nhau",
+		"ScriptSurvey": "SELECT count(*) as Total\r\nFROM fixed_asset fa\r\nINNER JOIN dic_organization do ON fa.organization_id = do.organization_id\r\nINNER JOIN dic_fixed_asset_category dfac ON fa.fixed_asset_category_id = dfac.fixed_asset_category_id\r\nWHERE fa.convert_circular_id <> dfac.convert_circular_id;",
+		"ScriptExecute": "UPDATE fixed_asset fa\r\nINNER JOIN dic_fixed_asset_category dfac ON fa.fixed_asset_category_id = dfac.fixed_asset_category_id\r\nSET fa.convert_circular_id = dfac.convert_circular_id\r\nWHERE fa.convert_circular_id <> dfac.convert_circular_id;\r\n \r\nUPDATE fixed_asset_ledger fa\r\nINNER JOIN fixed_asset dfac ON fa.organization_id = dfac.organization_id AND fa.fixed_asset_id = dfac.fixed_asset_id\r\nSET fa.convert_circular_id = dfac.convert_circular_id\r\nWHERE fa.convert_circular_id <> dfac.convert_circular_id;\r\n \r\nUPDATE fa_ledger_inventory fa\r\nINNER JOIN fixed_asset dfac ON fa.organization_id = dfac.organization_id AND fa.fixed_asset_id = dfac.fixed_asset_id\r\nSET fa.convert_circular_id = dfac.convert_circular_id\r\nWHERE fa.convert_circular_id <> dfac.convert_circular_id;"
+	},
+	{
+		"SubjectName": "Tài sản có nhiều nguồn amount = 0 và chỉ có một nguồn có giá trị đúng",
+		"ScriptSurvey": "SELECT count(*) as Total \r\nFROM \r\n(\r\n    SELECT lb.*\r\n    FROM ledger_budget lb INNER JOIN\r\n      (\r\n        SELECT * FROM\r\n        (\r\n          SELECT l.fixed_asset_id, IFNULL(l.voucher_id, '') AS voucher_id,\r\n          ROW_NUMBER() OVER(PARTITION BY fixed_asset_id ORDER BY change_date DESC, created_date DESC) AS STT\r\n          FROM ledger_budget l\r\n          WHERE IFNULL(voucher_type, 1) IN (1,2,8)\r\n        ) A WHERE A.STT = 1\r\n      ) A2 ON lb.fixed_asset_id = A2.fixed_asset_id AND IFNULL(lb.voucher_id, '') = A2.voucher_id\r\n) K1 INNER JOIN fixed_asset fa ON K1.fixed_asset_id = fa.fixed_asset_id\r\nINNER JOIN dic_organization do ON K1.organization_id = do.organization_id\r\nWHERE IFNULL(fa.orgprice, 0) > 0 AND IFNULL(K1.amount, 0) = 0\r\nGROUP BY fa.fixed_asset_code, do.organization_code;",
+		"ScriptExecute": "DELETE lb FROM ledger_budget lb\r\nINNER JOIN fixed_asset fa ON lb.fixed_asset_id = fa.fixed_asset_id\r\nWHERE IFNULL(fa.orgprice, 0) > 0 AND IFNULL(lb.amount, 0) = 0;"
+	},
+	{
+		"SubjectName": "Số chứng từ ở detail khác master",
+		"ScriptSurvey": "SELECT count(*) AS Total\r\n FROM \r\n(\r\nSELECT faid.voucher_id\r\nFROM fixed_asset_increment_detail faid\r\nINNER JOIN fixed_asset_increment fai ON faid.voucher_id = fai.voucher_id\r\nWHERE faid.voucher_code <> fai.voucher_code\r\nUNION ALL\r\nSELECT faid.voucher_id\r\nFROM fixed_asset_decrement_detail faid\r\nINNER JOIN fixed_asset_decrement fai ON faid.voucher_id = fai.voucher_id\r\nWHERE faid.voucher_code <> fai.voucher_code\r\nUNION ALL\r\nSELECT faid.voucher_id\r\nFROM fixed_asset_depreciation_detail faid\r\nINNER JOIN fixed_asset_depreciation fai ON faid.voucher_id = fai.voucher_id\r\nWHERE faid.voucher_code <> fai.voucher_code\r\nUNION ALL\r\nSELECT faid.voucher_id\r\nFROM fixed_asset_depreciation_business_detail faid\r\nINNER JOIN fixed_asset_depreciation_business fai ON faid.voucher_id = fai.voucher_id\r\nWHERE faid.voucher_code <> fai.voucher_code\r\nUNION ALL\r\nSELECT faid.voucher_id\r\nFROM fixed_asset_transfer_detail faid\r\nINNER JOIN fixed_asset_transfer fai ON faid.voucher_id = fai.voucher_id\r\nWHERE faid.voucher_code <> fai.voucher_code\r\n) K;",
+		"ScriptExecute": "-- Khac Phuc Ghi Giam\r\nUPDATE fixed_asset_decrement_detail faid\r\nINNER JOIN fixed_asset_decrement fai ON faid.voucher_id = fai.voucher_id\r\nSET faid.voucher_code = fai.voucher_code\r\nWHERE faid.voucher_code <> fai.voucher_code;\r\n\r\n-- Khac Phuc Ghi tang\r\nUPDATE fixed_asset_increment_detail faid\r\nINNER JOIN fixed_asset_increment fai ON faid.voucher_id = fai.voucher_id\r\nSET faid.voucher_code = fai.voucher_code\r\nWHERE faid.voucher_code <> fai.voucher_code;\r\n \r\n-- Khac Phuc Hao mon\r\nUPDATE fixed_asset_depreciation_detail faid\r\nINNER JOIN fixed_asset_depreciation fai ON faid.voucher_id = fai.voucher_id\r\nSET faid.voucher_code = fai.voucher_code\r\nWHERE faid.voucher_code <> fai.voucher_code;\r\n \r\n-- Khac Phuc Khau hao\r\nUPDATE fixed_asset_depreciation_business_detail faid\r\nINNER JOIN fixed_asset_depreciation_business fai ON faid.voucher_id = fai.voucher_id\r\nSET faid.voucher_code = fai.voucher_code\r\nWHERE faid.voucher_code <> fai.voucher_code;\r\n\r\n-- Khac Phuc Dieu Chuyen\r\nUPDATE fixed_asset_transfer_detail faid\r\nINNER JOIN fixed_asset_transfer fai ON faid.voucher_id = fai.voucher_id\r\nSET faid.voucher_code = fai.voucher_code\r\nWHERE faid.voucher_code <> fai.voucher_code;"
+	},
+	{
+		"SubjectName": "Trạng thái của tài sản lô cha và con đang không đồng nhất",
+		"ScriptSurvey": "SELECT count(*) as Total\r\nFROM fixed_asset fa1\r\nINNER JOIN (\r\n  SELECT\r\n  SUM(IF(fa.status_id = 2, 1,0)) AS TotalChuaGhiTang,\r\n  SUM(IF(fa.status_id = 3, 1,0)) AS TotalDaGhiGiam,\r\n  COUNT(*) AS Total,\r\n  fa.parent_id\r\n  FROM fixed_asset fa\r\n  WHERE fa.parent_id IS NOT NULL\r\n  GROUP BY fa.parent_id\r\n) K ON fa1.fixed_asset_id = K.parent_id\r\nWHERE fa1.is_parent = 1\r\nAND\r\n(\r\n (fa1.status_id = 3 AND K.Total <> K.TotalDaGhiGiam)\r\n OR\r\n (fa1.status_id = 2 AND K.Total <> K.TotalChuaGhiTang)\r\n OR\r\n (fa1.status_id = 1 AND (K.TotalDaGhiGiam = K.Total OR K.TotalChuaGhiTang = K.Total))\r\n);",
+		"ScriptExecute": "update fixed_asset fa1\r\nINNER JOIN (\r\n  SELECT\r\n  SUM(IF(fa.status_id = 1, 1,0)) AS TotalDangSuDung,\r\n  SUM(IF(fa.status_id = 2, 1,0)) AS TotalChuaGhiTang,\r\n  SUM(IF(fa.status_id = 3, 1,0)) AS TotalDaGhiGiam,\r\n  COUNT(*) AS Total,\r\n  fa.parent_id\r\n  FROM fixed_asset fa\r\n  WHERE fa.parent_id IS NOT NULL\r\n  GROUP BY fa.parent_id\r\n) K ON fa1.fixed_asset_id = K.parent_id\r\nSET fa1.status_id = CASE WHEN K.TotalDangSuDung > 0 THEN 1\r\n                         WHEN K.TotalDaGhiGiam = K.Total THEN 3\r\n                         WHEN K.TotalChuaGhiTang = K.Total THEN 2 ELSE fa1.status_id END\r\nWHERE fa1.is_parent = 1\r\nAND\r\n(\r\n (fa1.status_id = 3 AND K.Total <> K.TotalDaGhiGiam)\r\n OR\r\n (fa1.status_id = 2 AND K.Total <> K.TotalChuaGhiTang)\r\n OR\r\n (fa1.status_id = 1 AND (K.TotalDaGhiGiam = K.Total OR K.TotalChuaGhiTang = K.Total))\r\n);"
+	},
+	{
+		"SubjectName": "Tài sản bị mất loại tính hao mòn",
+		"ScriptSurvey": "SELECT count(*) as Total FROM fixed_asset fa WHERE fa.fixed_asset_type IS NULL;",
+		"ScriptExecute": "UPDATE fixed_asset fa\r\nSET fa.fixed_asset_type =\r\nCASE\r\n  WHEN fa.depreciation_for_business_start_date is NOT NULL AND fa.depreciation_start_date IS NOT NULL THEN 3\r\n  WHEN fa.depreciation_for_business_start_date is NOT NULL AND fa.depreciation_start_date IS NULL THEN 2\r\n  WHEN fa.depreciation_for_business_start_date is NULL AND fa.depreciation_start_date IS NOT NULL THEN 1\r\nEND\r\nWHERE fa.fixed_asset_type IS NULL;"
+	},
+	{
+		"SubjectName": "CCDC phòng ban ở màn danh sách khác so với chứng từ khai báo ban đầu",
+		"ScriptSurvey": "SELECT count(*) as Total\r\nFROM equipment e\r\nINNER JOIN equipment_ledger el\r\n  ON e.equipment_id = el.equipment_id\r\n  AND e.organization_id = el.organization_id\r\n  AND el.voucher_type = 6\r\nWHERE e.department_id <> el.department_id\r\nAND e.department_id IS NOT NULL\r\nGROUP BY e.equipment_id;",
+		"ScriptExecute": "UPDATE equipment_ledger el\r\nINNER JOIN equipment e\r\n  ON e.equipment_id = el.equipment_id\r\n  AND e.organization_id = el.organization_id\r\n  AND el.voucher_type = 6\r\nSET el.department_id = e.department_id,\r\n    el.department_code = e.department_code,\r\n    el.department_name = e.department_name\r\nWHERE e.department_id <> el.department_id\r\nAND e.department_id IS NOT NULL;"
+	},
+	{
+		"SubjectName": "Tài sản có nguồn là nguồn cha nên không hiển thị được ở chi tiết tài sản",
+		"ScriptSurvey": "select count(*) as Total\r\nfrom ledger_budget lb\r\ninner join fixed_asset fa on lb.fixed_asset_id = fa.fixed_asset_id\r\nleft join dic_budget_category dbc on lb.budget_category_id = dbc.budget_category_id and dbc.organization_id = lb.organization_id\r\nleft join dic_budget_category dbc2 on lb.budget_category_id = dbc2.budget_category_id and dbc2.organization_id is NULL\r\nwhere IFNULL(fa.is_parent, 0) = 0\r\nand (case when dbc.budget_category_id is not null then dbc.is_parent else dbc2.is_parent end) = 1\r\ngroup by fa.fixed_asset_id;",
+		"ScriptExecute": ""
+	}
+	]
+}
+
