@@ -400,5 +400,18 @@ namespace QLTS.Tool_Khao_Sat
 
             formScript.ShowDialog();
         }
+
+        private void SetSelectedAll(bool isSelected)
+        {
+            foreach (ListViewItem item in listView1.Items)
+            {
+                item.Checked = isSelected;
+            }
+        }
+
+        private void checkBoxAll_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSelectedAll(checkBoxAll.Checked);
+        }
     }
 }

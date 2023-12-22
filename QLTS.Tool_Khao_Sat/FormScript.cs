@@ -34,6 +34,7 @@ namespace QLTS.Tool_Khao_Sat
                 parentForm.scriptExecute = txtEditScript.Text;
 
                 this.Hide();
+                parentForm.Show();
             }
             catch (Exception ex)
             {

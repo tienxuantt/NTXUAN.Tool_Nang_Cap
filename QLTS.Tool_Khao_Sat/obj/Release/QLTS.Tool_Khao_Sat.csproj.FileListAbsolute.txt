@@ -122,3 +122,4 @@ D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Release\QLTS.Tool_Khao_Sat.csproj.Core
 D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Release\QLTS.Tool_Khao_Sat.csproj.CopyComplete
 D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Release\QLTS.Tool_Khao_Sat.exe
 D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Release\QLTS.Tool_Khao_Sat.pdb
+D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Release\QLTS.Tool_Khao_Sat.csprojAssemblyReference.cache

@@ -42,11 +42,11 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.labelFail = new System.Windows.Forms.Label();
             this.labelSuccess = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.labelTenantProcess = new System.Windows.Forms.Label();
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
+            this.checkBoxAll = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -120,7 +120,7 @@
             // 
             // btnLoadTeant
             // 
-            this.btnLoadTeant.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnLoadTeant.BackColor = System.Drawing.Color.PaleTurquoise;
             this.btnLoadTeant.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLoadTeant.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnLoadTeant.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -167,9 +167,9 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.checkBoxAll);
             this.panel4.Controls.Add(this.labelFail);
             this.panel4.Controls.Add(this.labelSuccess);
-            this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.labelTenantProcess);
             this.panel4.Location = new System.Drawing.Point(4, 7);
@@ -196,17 +196,6 @@
             this.labelSuccess.Size = new System.Drawing.Size(59, 18);
             this.labelSuccess.TabIndex = 9;
             this.labelSuccess.Text = "Success";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.label5.Location = new System.Drawing.Point(11, 26);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(127, 18);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Danh sách các tỉnh:";
             // 
             // label3
             // 
@@ -256,6 +245,17 @@
             this.btnEditScript.UseVisualStyleBackColor = false;
             this.btnEditScript.Click += new System.EventHandler(this.btnEditScript_Click);
             // 
+            // checkBoxAll
+            // 
+            this.checkBoxAll.AutoSize = true;
+            this.checkBoxAll.Location = new System.Drawing.Point(19, 27);
+            this.checkBoxAll.Name = "checkBoxAll";
+            this.checkBoxAll.Size = new System.Drawing.Size(81, 17);
+            this.checkBoxAll.TabIndex = 11;
+            this.checkBoxAll.Text = "Chọn tất cả";
+            this.checkBoxAll.UseVisualStyleBackColor = true;
+            this.checkBoxAll.CheckedChanged += new System.EventHandler(this.checkBoxAll_CheckedChanged);
+            // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,12 +299,12 @@
         private System.Windows.Forms.Button btnLoadTeant;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label labelTenantProcess;
         private System.Windows.Forms.Label labelFail;
         private System.Windows.Forms.Label labelSuccess;
         private System.Windows.Forms.Button btnUpgrade;
         private System.Windows.Forms.Button btnEditScript;
+        private System.Windows.Forms.CheckBox checkBoxAll;
     }
 }
 

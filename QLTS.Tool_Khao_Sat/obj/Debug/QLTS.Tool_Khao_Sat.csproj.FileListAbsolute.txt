@@ -370,3 +370,4 @@ D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.csproj.CopyCo
 D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.exe
 D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.pdb
 D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.fFormScript.resources
+D:\InternetToLocal\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.csprojAssemblyReference.cache
