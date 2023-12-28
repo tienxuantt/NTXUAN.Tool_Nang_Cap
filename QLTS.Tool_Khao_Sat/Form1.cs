@@ -462,5 +462,45 @@ namespace QLTS.Tool_Khao_Sat
         {
             SetSelectedAll(checkBoxAll.Checked);
         }
+
+        private async Task DeleteMisaQlts()
+        {
+            try
+            {
+                List<Tenant> listTenant = new List<Tenant>();
+
+                listTenant = await api.GetTeants();
+
+                var authen = listTenant.FirstOrDefault(s => s.tenant_code.Contains("authen"));
+
+                if (authen != null)
+                {
+                    var result = await api.ExecuteScript(authen.tenant_id.ToString(), Script.ScriptDeleteUser_Authen);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private void btnDeleteMisaQLTS_Click(object sender, EventArgs e)
+        {
+            upgradeActive = true;
+            scriptExecute = Script.ScriptDeleteUser;
+
+            if (!ValidateForm(true))
+            {
+                return;
+            }
+
+            Thread thread = new Thread(async () => {
+                await DeleteMisaQlts();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+
+            StartUpgrade();
+        }
     }
 }

@@ -1,2 +1,0 @@
-CALL Proc_Jira_ReCallUpdateFAData('018a727f-0733-4a4e-a8d2-2d4a6e9b6c62'); 
-CALL Proc_Jira_ReCallUpdateFAData('e00d6a95-adfa-4863-a342-734031247427'); 

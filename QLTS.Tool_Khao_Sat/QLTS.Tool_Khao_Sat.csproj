@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BL\HttpApi.cs" />
+    <Compile Include="BL\Script.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

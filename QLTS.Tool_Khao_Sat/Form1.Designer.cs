@@ -40,6 +40,8 @@
             this.txtCookie = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.checkBoxExecute = new System.Windows.Forms.CheckBox();
+            this.checkBoxSaveOutput = new System.Windows.Forms.CheckBox();
             this.checkBoxAll = new System.Windows.Forms.CheckBox();
             this.labelFail = new System.Windows.Forms.Label();
             this.labelSuccess = new System.Windows.Forms.Label();
@@ -47,8 +49,7 @@
             this.labelTenantProcess = new System.Windows.Forms.Label();
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
-            this.checkBoxSaveOutput = new System.Windows.Forms.CheckBox();
-            this.checkBoxExecute = new System.Windows.Forms.CheckBox();
+            this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -112,7 +113,7 @@
             this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStop.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStop.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(789, 307);
+            this.btnStop.Location = new System.Drawing.Point(789, 359);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(254, 36);
             this.btnStop.TabIndex = 7;
@@ -180,6 +181,28 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1039, 48);
             this.panel4.TabIndex = 3;
+            // 
+            // checkBoxExecute
+            // 
+            this.checkBoxExecute.AutoSize = true;
+            this.checkBoxExecute.Location = new System.Drawing.Point(189, 27);
+            this.checkBoxExecute.Name = "checkBoxExecute";
+            this.checkBoxExecute.Size = new System.Drawing.Size(98, 17);
+            this.checkBoxExecute.TabIndex = 13;
+            this.checkBoxExecute.Text = "Execute output";
+            this.checkBoxExecute.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSaveOutput
+            // 
+            this.checkBoxSaveOutput.AutoSize = true;
+            this.checkBoxSaveOutput.Checked = true;
+            this.checkBoxSaveOutput.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSaveOutput.Location = new System.Drawing.Point(106, 27);
+            this.checkBoxSaveOutput.Name = "checkBoxSaveOutput";
+            this.checkBoxSaveOutput.Size = new System.Drawing.Size(77, 17);
+            this.checkBoxSaveOutput.TabIndex = 12;
+            this.checkBoxSaveOutput.Text = "Lưu output";
+            this.checkBoxSaveOutput.UseVisualStyleBackColor = true;
             // 
             // checkBoxAll
             // 
@@ -260,33 +283,26 @@
             this.btnEditScript.UseVisualStyleBackColor = false;
             this.btnEditScript.Click += new System.EventHandler(this.btnEditScript_Click);
             // 
-            // checkBoxSaveOutput
+            // btnDeleteMisaQLTS
             // 
-            this.checkBoxSaveOutput.AutoSize = true;
-            this.checkBoxSaveOutput.Checked = true;
-            this.checkBoxSaveOutput.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxSaveOutput.Location = new System.Drawing.Point(106, 27);
-            this.checkBoxSaveOutput.Name = "checkBoxSaveOutput";
-            this.checkBoxSaveOutput.Size = new System.Drawing.Size(77, 17);
-            this.checkBoxSaveOutput.TabIndex = 12;
-            this.checkBoxSaveOutput.Text = "Lưu output";
-            this.checkBoxSaveOutput.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxExecute
-            // 
-            this.checkBoxExecute.AutoSize = true;
-            this.checkBoxExecute.Location = new System.Drawing.Point(189, 27);
-            this.checkBoxExecute.Name = "checkBoxExecute";
-            this.checkBoxExecute.Size = new System.Drawing.Size(98, 17);
-            this.checkBoxExecute.TabIndex = 13;
-            this.checkBoxExecute.Text = "Execute output";
-            this.checkBoxExecute.UseVisualStyleBackColor = true;
+            this.btnDeleteMisaQLTS.BackColor = System.Drawing.Color.LavenderBlush;
+            this.btnDeleteMisaQLTS.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDeleteMisaQLTS.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnDeleteMisaQLTS.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeleteMisaQLTS.Location = new System.Drawing.Point(789, 307);
+            this.btnDeleteMisaQLTS.Name = "btnDeleteMisaQLTS";
+            this.btnDeleteMisaQLTS.Size = new System.Drawing.Size(254, 36);
+            this.btnDeleteMisaQLTS.TabIndex = 10;
+            this.btnDeleteMisaQLTS.Text = "Xóa MisaQLTS";
+            this.btnDeleteMisaQLTS.UseVisualStyleBackColor = false;
+            this.btnDeleteMisaQLTS.Click += new System.EventHandler(this.btnDeleteMisaQLTS_Click);
             // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1055, 775);
+            this.Controls.Add(this.btnDeleteMisaQLTS);
             this.Controls.Add(this.btnEditScript);
             this.Controls.Add(this.btnUpgrade);
             this.Controls.Add(this.label1);
@@ -333,6 +349,7 @@
         private System.Windows.Forms.CheckBox checkBoxAll;
         private System.Windows.Forms.CheckBox checkBoxSaveOutput;
         private System.Windows.Forms.CheckBox checkBoxExecute;
+        private System.Windows.Forms.Button btnDeleteMisaQLTS;
     }
 }
 
