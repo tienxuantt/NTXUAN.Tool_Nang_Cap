@@ -37,6 +37,9 @@ namespace QLTS.Tool_Khao_Sat
         // Tối đa bao nhiêu thread
         private int maxProcess = 15;
 
+        private bool isSaveOutput = false;
+        private bool isExecuteOutput = false;
+
         private object key = new object();
 
         public fForm()
@@ -48,6 +51,19 @@ namespace QLTS.Tool_Khao_Sat
         public void InitForm()
         {
             api = new HttpApi();
+
+            LoadCookie();
+        }
+
+        private void LoadCookie()
+        {
+            CookieJson result = new CookieJson();
+
+            result = api.LoadCookieJson();
+
+            txtCookie.Text = result.Cookie;
+
+            api.CookieValue = result.Cookie;
         }
 
         // Lưu lại cookie
@@ -62,6 +78,8 @@ namespace QLTS.Tool_Khao_Sat
             else
             {
                 api.CookieValue = cookie;
+
+                api.SaveCookieJson(cookie);
             }
         }
 
@@ -142,7 +160,7 @@ namespace QLTS.Tool_Khao_Sat
         }
 
         // Validate cookie
-        private bool ValidateForm()
+        private bool ValidateForm(bool isValidateScript = false)
         {
             bool valid = true;
 
@@ -153,7 +171,7 @@ namespace QLTS.Tool_Khao_Sat
                 MessageBox.Show("Vui lòng nhập cookie", "Thông báo");
             }
 
-            if (valid && string.IsNullOrEmpty(scriptExecute))
+            if (isValidateScript && valid && string.IsNullOrEmpty(scriptExecute))
             {
                 valid = false;
 
@@ -186,6 +204,10 @@ namespace QLTS.Tool_Khao_Sat
         // Bắt đầu khảo sát các subject được chọn
         private void StartUpgrade()
         {
+            // Lấy các biến
+            isSaveOutput = checkBoxSaveOutput.Checked;
+            isExecuteOutput = checkBoxExecute.Checked;
+
             // Lấy ra các subject khảo sát
             tenantsUpgrade = GetListTenantUpgrade();
 
@@ -199,6 +221,9 @@ namespace QLTS.Tool_Khao_Sat
 
             // Bật cờ
             upgradeActive = true;
+
+            // Xóa file log
+            ClearFileLog();
 
             // Tạo một luồng riêng cho khảo sát
             Thread thread = new Thread(async () => {
@@ -304,22 +329,6 @@ namespace QLTS.Tool_Khao_Sat
             return listResult;
         }
 
-        private void WriteLog(string log)
-        {
-            string pathLog = "D:/LogKhaoSat.txt";
-
-            try
-            {
-                StreamWriter sw = new StreamWriter(pathLog, true);
-
-                sw.Write(log);
-                sw.Close();
-            }
-            catch
-            {
-            }
-        }
-
         private void NewProcessExecuteScript(Tenant tenant)
         {
             listView1.Invoke(new MethodInvoker(() =>
@@ -336,6 +345,20 @@ namespace QLTS.Tool_Khao_Sat
                 try
                 {
                     var result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptExecute);
+
+                    // Lưu lại kết quả
+                    if (isSaveOutput)
+                    {
+                        SaveOutputResult(result);
+                    }
+
+                    // Chạy luôn script
+                    if (isExecuteOutput)
+                    {
+                        var querys = result.Select(s => s.Data).ToArray();
+
+                        result = await api.ExecuteScript(tenant.tenant_id.ToString(), String.Join(" \n ", querys));
+                    }
 
                     TotalTenantUpgradeDone++;
                 }
@@ -377,6 +400,32 @@ namespace QLTS.Tool_Khao_Sat
             thread.Start();
         }
 
+        private void ClearFileLog()
+        {
+            string filePath = Application.StartupPath + "/Data/LogKhaoSat.txt";
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+
+        private void SaveOutputResult(List<DataV2> listData)
+        {
+            try
+            {
+                string filePath = Application.StartupPath + "/Data/LogKhaoSat.txt";
+
+                foreach (var item in listData)
+                {
+                    api.WriteLog(string.Format("{0} \n",item.Data), filePath);
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
         private void btnStop_Click(object sender, EventArgs e)
         {
             upgradeActive = false;
@@ -386,7 +435,7 @@ namespace QLTS.Tool_Khao_Sat
         {
             upgradeActive = true;
 
-            if (!ValidateForm())
+            if (!ValidateForm(true))
             {
                 return;
             }

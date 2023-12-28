@@ -31,4 +31,22 @@ namespace QLTS.Tool_Khao_Sat.Model
     {
         public List<Subject> Data { get; set; }
     }
+
+    public class CookieJson
+    {
+        public string Cookie { get; set; } = "";
+    }
+
+    public class ExecuteResponseV2
+    {
+        public int Status { get; set; }
+        public string Message { get; set; }
+        public List<DataV2> Data { get; set; }
+        public object Code { get; set; }
+    }
+
+    public class DataV2
+    {
+        public string Data { get; set; }
+    }
 }

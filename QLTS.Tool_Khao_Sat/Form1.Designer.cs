@@ -40,13 +40,15 @@
             this.txtCookie = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.checkBoxAll = new System.Windows.Forms.CheckBox();
             this.labelFail = new System.Windows.Forms.Label();
             this.labelSuccess = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.labelTenantProcess = new System.Windows.Forms.Label();
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
-            this.checkBoxAll = new System.Windows.Forms.CheckBox();
+            this.checkBoxSaveOutput = new System.Windows.Forms.CheckBox();
+            this.checkBoxExecute = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -167,6 +169,8 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.checkBoxExecute);
+            this.panel4.Controls.Add(this.checkBoxSaveOutput);
             this.panel4.Controls.Add(this.checkBoxAll);
             this.panel4.Controls.Add(this.labelFail);
             this.panel4.Controls.Add(this.labelSuccess);
@@ -176,6 +180,17 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1039, 48);
             this.panel4.TabIndex = 3;
+            // 
+            // checkBoxAll
+            // 
+            this.checkBoxAll.AutoSize = true;
+            this.checkBoxAll.Location = new System.Drawing.Point(19, 27);
+            this.checkBoxAll.Name = "checkBoxAll";
+            this.checkBoxAll.Size = new System.Drawing.Size(81, 17);
+            this.checkBoxAll.TabIndex = 11;
+            this.checkBoxAll.Text = "Chọn tất cả";
+            this.checkBoxAll.UseVisualStyleBackColor = true;
+            this.checkBoxAll.CheckedChanged += new System.EventHandler(this.checkBoxAll_CheckedChanged);
             // 
             // labelFail
             // 
@@ -245,16 +260,27 @@
             this.btnEditScript.UseVisualStyleBackColor = false;
             this.btnEditScript.Click += new System.EventHandler(this.btnEditScript_Click);
             // 
-            // checkBoxAll
+            // checkBoxSaveOutput
             // 
-            this.checkBoxAll.AutoSize = true;
-            this.checkBoxAll.Location = new System.Drawing.Point(19, 27);
-            this.checkBoxAll.Name = "checkBoxAll";
-            this.checkBoxAll.Size = new System.Drawing.Size(81, 17);
-            this.checkBoxAll.TabIndex = 11;
-            this.checkBoxAll.Text = "Chọn tất cả";
-            this.checkBoxAll.UseVisualStyleBackColor = true;
-            this.checkBoxAll.CheckedChanged += new System.EventHandler(this.checkBoxAll_CheckedChanged);
+            this.checkBoxSaveOutput.AutoSize = true;
+            this.checkBoxSaveOutput.Checked = true;
+            this.checkBoxSaveOutput.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSaveOutput.Location = new System.Drawing.Point(106, 27);
+            this.checkBoxSaveOutput.Name = "checkBoxSaveOutput";
+            this.checkBoxSaveOutput.Size = new System.Drawing.Size(77, 17);
+            this.checkBoxSaveOutput.TabIndex = 12;
+            this.checkBoxSaveOutput.Text = "Lưu output";
+            this.checkBoxSaveOutput.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxExecute
+            // 
+            this.checkBoxExecute.AutoSize = true;
+            this.checkBoxExecute.Location = new System.Drawing.Point(189, 27);
+            this.checkBoxExecute.Name = "checkBoxExecute";
+            this.checkBoxExecute.Size = new System.Drawing.Size(98, 17);
+            this.checkBoxExecute.TabIndex = 13;
+            this.checkBoxExecute.Text = "Execute output";
+            this.checkBoxExecute.UseVisualStyleBackColor = true;
             // 
             // fForm
             // 
@@ -305,6 +331,8 @@
         private System.Windows.Forms.Button btnUpgrade;
         private System.Windows.Forms.Button btnEditScript;
         private System.Windows.Forms.CheckBox checkBoxAll;
+        private System.Windows.Forms.CheckBox checkBoxSaveOutput;
+        private System.Windows.Forms.CheckBox checkBoxExecute;
     }
 }
 

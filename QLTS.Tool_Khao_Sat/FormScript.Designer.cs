@@ -61,6 +61,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEditScript.Location = new System.Drawing.Point(12, 12);
+            this.txtEditScript.MaxLength = 1000000;
             this.txtEditScript.Multiline = true;
             this.txtEditScript.Name = "txtEditScript";
             this.txtEditScript.ScrollBars = System.Windows.Forms.ScrollBars.Both;

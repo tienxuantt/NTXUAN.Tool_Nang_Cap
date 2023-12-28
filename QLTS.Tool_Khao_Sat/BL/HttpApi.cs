@@ -79,17 +79,22 @@ namespace QLTS.Tool_Khao_Sat.BL
             return result;
         }
 
-        public async Task<bool> ExecuteScript(string tenant_id, string query)
+        public async Task<List<DataV2>> ExecuteScript(string tenant_id, string query)
         {
-            var result = true;
+            var result = new List<DataV2>();
 
             var resultContent = await PostApi(tenant_id, query);
 
-            var response = JsonSerializer.Deserialize<ExecuteResponse>(resultContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var response = JsonSerializer.Deserialize<ExecuteResponseV2>(resultContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if(response.Status == 0)
             {
                 throw new Exception("Có lỗi xảy ra");
+            }
+
+            if (response.Data.Count > 0)
+            {
+                result = response.Data;
             }
 
             return result;
@@ -145,6 +150,50 @@ namespace QLTS.Tool_Khao_Sat.BL
             }
 
             return subjects;
+        }
+
+        public void WriteLog(string log, string pathLog)
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter(pathLog, true);
+
+                sw.Write(log);
+                sw.Close();
+            }
+            catch
+            {
+            }
+        }
+
+        public void SaveCookieJson(string cookie)
+        {
+            CookieJson cookieObj = new CookieJson();
+            cookieObj.Cookie = cookie;
+
+            string json = JsonSerializer.Serialize(cookieObj, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            File.WriteAllText(Application.StartupPath + "/Data/Cookie.json", json);
+        }
+
+        public CookieJson LoadCookieJson()
+        {
+            CookieJson result = new CookieJson();
+
+            try
+            {
+                using (StreamReader r = new StreamReader(Application.StartupPath + "/Data/Cookie.json"))
+                {
+                    string json = r.ReadToEnd();
+
+                    result = JsonSerializer.Deserialize<CookieJson>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return result;
         }
     }
 }
