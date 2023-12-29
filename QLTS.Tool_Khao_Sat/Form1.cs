@@ -133,7 +133,10 @@ namespace QLTS.Tool_Khao_Sat
             List<string> tenantIgnore = new List<string>()
             {
                 "authen",
-                "register"
+                "register",
+                "demo",
+                "test",
+                "thidiem"
             };
 
             result = await api.GetTeants();
