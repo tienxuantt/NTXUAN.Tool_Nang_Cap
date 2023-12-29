@@ -243,7 +243,7 @@ namespace QLTS.Tool_Khao_Sat
         {
             while (upgradeActive && TotalTenantUpgradeSuccess < TotalTenantUpgrade)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(200);
 
                 if (countProcess < maxProcess)
                 {
