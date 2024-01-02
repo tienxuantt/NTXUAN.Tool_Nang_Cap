@@ -50,6 +50,7 @@
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
             this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
+            this.txtSearch = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -170,6 +171,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.txtSearch);
             this.panel4.Controls.Add(this.checkBoxExecute);
             this.panel4.Controls.Add(this.checkBoxSaveOutput);
             this.panel4.Controls.Add(this.checkBoxAll);
@@ -297,6 +299,14 @@
             this.btnDeleteMisaQLTS.UseVisualStyleBackColor = false;
             this.btnDeleteMisaQLTS.Click += new System.EventHandler(this.btnDeleteMisaQLTS_Click);
             // 
+            // txtSearch
+            // 
+            this.txtSearch.Location = new System.Drawing.Point(293, 24);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(127, 20);
+            this.txtSearch.TabIndex = 14;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -350,6 +360,7 @@
         private System.Windows.Forms.CheckBox checkBoxSaveOutput;
         private System.Windows.Forms.CheckBox checkBoxExecute;
         private System.Windows.Forms.Button btnDeleteMisaQLTS;
+        private System.Windows.Forms.TextBox txtSearch;
     }
 }
 

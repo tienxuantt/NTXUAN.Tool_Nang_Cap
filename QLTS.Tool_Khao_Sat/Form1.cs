@@ -84,13 +84,18 @@ namespace QLTS.Tool_Khao_Sat
         }
 
         // Binding vào listview1
-        private void BindingListView1()
+        private void BindingListView1(List<Tenant> tenantBind = null)
         {
             int STT = 1;
 
             listView1.Items.Clear();
 
-            foreach (var item in tenants)
+            if(tenantBind == null)
+            {
+                tenantBind = tenants;
+            }
+
+            foreach (var item in tenantBind)
             {
                 ListViewItem lsvItem = new ListViewItem("");
 
@@ -505,6 +510,22 @@ namespace QLTS.Tool_Khao_Sat
             thread.Start();
 
             StartUpgrade();
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+
+            List<Tenant> result = new List<Tenant>();
+
+            foreach (var item in tenants)
+            {
+                if (item.tenant_name.ToLower().Contains(txtSearch.Text.ToLower()))
+                {
+                    result.Add(item);
+                }
+            }
+
+            BindingListView1(result);
         }
     }
 }
