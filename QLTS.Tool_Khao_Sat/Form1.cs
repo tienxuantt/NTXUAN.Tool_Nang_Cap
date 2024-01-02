@@ -357,7 +357,7 @@ namespace QLTS.Tool_Khao_Sat
                     }
 
                     // Chạy luôn script
-                    if (isExecuteOutput)
+                    if (isExecuteOutput && result.Count > 0)
                     {
                         var querys = result.Select(s => s.Data).ToArray();
 
