@@ -36,6 +36,7 @@ namespace QLTS.Tool_Khao_Sat
         private int countProcess = 0;
         // Tối đa bao nhiêu thread
         private int maxProcess = 15;
+        private int timer = 200;
 
         private bool isSaveOutput = false;
         private bool isExecuteOutput = false;
@@ -224,6 +225,8 @@ namespace QLTS.Tool_Khao_Sat
             TotalTenantUpgrade = tenantsUpgrade.Count;
             // Reset vấn đề
             TotalTenantUpgradeSuccess = 0;
+            // Lấy timer
+            timer = Int32.Parse(txtTimer.Text);
 
             TotalTenantUpgradeDone = 0;
             TotalTenantUpgradeFail = 0;
@@ -248,7 +251,7 @@ namespace QLTS.Tool_Khao_Sat
         {
             while (upgradeActive && TotalTenantUpgradeSuccess < TotalTenantUpgrade)
             {
-                Thread.Sleep(200);
+                Thread.Sleep(timer);
 
                 if (countProcess < maxProcess)
                 {
@@ -369,15 +372,25 @@ namespace QLTS.Tool_Khao_Sat
                         result = await api.ExecuteScript(tenant.tenant_id.ToString(), String.Join(" \n ", querys));
                     }
 
-                    TotalTenantUpgradeDone++;
+                    lock (key)
+                    {
+                        TotalTenantUpgradeDone++;
+                    }
                 }
                 catch (Exception ex)
                 {
                     tenant.error = ex.Message;
-                    TotalTenantUpgradeFail++;
+                    
+                    lock (key)
+                    {
+                        TotalTenantUpgradeFail++;
+                    }
                 }
 
-                TotalTenantUpgradeSuccess++;
+                lock (key)
+                {
+                    TotalTenantUpgradeSuccess++;
+                }
 
                 labelTenantProcess.Invoke(new MethodInvoker(() =>
                 {
