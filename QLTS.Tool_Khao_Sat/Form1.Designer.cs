@@ -52,6 +52,7 @@
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
             this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
+            this.txtRun = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -172,6 +173,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.txtRun);
             this.panel4.Controls.Add(this.txtTimer);
             this.panel4.Controls.Add(this.txtSearch);
             this.panel4.Controls.Add(this.checkBoxExecute);
@@ -318,6 +320,15 @@
             this.btnDeleteMisaQLTS.UseVisualStyleBackColor = false;
             this.btnDeleteMisaQLTS.Click += new System.EventHandler(this.btnDeleteMisaQLTS_Click);
             // 
+            // txtRun
+            // 
+            this.txtRun.Location = new System.Drawing.Point(477, 24);
+            this.txtRun.Name = "txtRun";
+            this.txtRun.Size = new System.Drawing.Size(44, 20);
+            this.txtRun.TabIndex = 16;
+            this.txtRun.Text = "50";
+            this.txtRun.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -374,6 +385,7 @@
         private System.Windows.Forms.Button btnDeleteMisaQLTS;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.TextBox txtTimer;
+        private System.Windows.Forms.TextBox txtRun;
     }
 }
 

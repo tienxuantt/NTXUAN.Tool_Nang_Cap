@@ -495,4 +495,3 @@ D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.csproj.C
 D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.csproj.CopyComplete
 D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.exe
 D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.pdb
-D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.csprojAssemblyReference.cache

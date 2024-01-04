@@ -37,6 +37,7 @@ namespace QLTS.Tool_Khao_Sat
         // Tối đa bao nhiêu thread
         private int maxProcess = 15;
         private int timer = 200;
+        private int numRun = 50;
 
         private bool isSaveOutput = false;
         private bool isExecuteOutput = false;
@@ -227,6 +228,7 @@ namespace QLTS.Tool_Khao_Sat
             TotalTenantUpgradeSuccess = 0;
             // Lấy timer
             timer = Int32.Parse(txtTimer.Text);
+            numRun = Int32.Parse(txtRun.Text);
 
             TotalTenantUpgradeDone = 0;
             TotalTenantUpgradeFail = 0;
@@ -431,7 +433,7 @@ namespace QLTS.Tool_Khao_Sat
             {
                 scriptRun += listScript[i] + " \n ";
 
-                if (index >= 50 || (i == listScript.Count - 1))
+                if (index >= numRun || (i == listScript.Count - 1))
                 {
                     Thread.Sleep(2000);
 
@@ -500,7 +502,7 @@ namespace QLTS.Tool_Khao_Sat
         {
             var formScript = new fFormScript(this);
 
-            formScript.ShowDialog();
+            formScript.Show();
         }
 
         private void SetSelectedAll(bool isSelected)
