@@ -40,6 +40,7 @@
             this.txtCookie = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.txtTimer = new System.Windows.Forms.TextBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.checkBoxExecute = new System.Windows.Forms.CheckBox();
             this.checkBoxSaveOutput = new System.Windows.Forms.CheckBox();
@@ -51,7 +52,6 @@
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
             this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
-            this.txtTimer = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -186,6 +186,15 @@
             this.panel4.Size = new System.Drawing.Size(1039, 48);
             this.panel4.TabIndex = 3;
             // 
+            // txtTimer
+            // 
+            this.txtTimer.Location = new System.Drawing.Point(427, 24);
+            this.txtTimer.Name = "txtTimer";
+            this.txtTimer.Size = new System.Drawing.Size(43, 20);
+            this.txtTimer.TabIndex = 15;
+            this.txtTimer.Text = "10";
+            this.txtTimer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // txtSearch
             // 
             this.txtSearch.Location = new System.Drawing.Point(293, 24);
@@ -309,15 +318,6 @@
             this.btnDeleteMisaQLTS.UseVisualStyleBackColor = false;
             this.btnDeleteMisaQLTS.Click += new System.EventHandler(this.btnDeleteMisaQLTS_Click);
             // 
-            // txtTimer
-            // 
-            this.txtTimer.Location = new System.Drawing.Point(427, 24);
-            this.txtTimer.Name = "txtTimer";
-            this.txtTimer.Size = new System.Drawing.Size(43, 20);
-            this.txtTimer.TabIndex = 15;
-            this.txtTimer.Text = "10";
-            this.txtTimer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -339,6 +339,7 @@
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tool nâng cấp dữ liệu";
+            this.Load += new System.EventHandler(this.fForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();

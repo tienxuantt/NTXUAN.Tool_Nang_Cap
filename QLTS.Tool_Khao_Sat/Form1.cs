@@ -367,9 +367,9 @@ namespace QLTS.Tool_Khao_Sat
                     // Chạy luôn script
                     if (isExecuteOutput && result.Count > 0)
                     {
-                        var querys = result.Select(s => s.Data).ToArray();
+                        var querys = result.Select(s => s.Data).ToList();
 
-                        result = await api.ExecuteScript(tenant.tenant_id.ToString(), String.Join(" \n ", querys));
+                        await RunScript(tenant, querys);
                     }
 
                     lock (key)
@@ -420,6 +420,37 @@ namespace QLTS.Tool_Khao_Sat
 
             thread.IsBackground = true;
             thread.Start();
+        }
+
+        private async Task RunScript(Tenant tenant, List<string> listScript)
+        {
+            int index = 1;
+            string scriptRun = "";
+
+            for (int i = 0; i < listScript.Count; i++)
+            {
+                scriptRun += listScript[i] + " \n ";
+
+                if (index >= 50 || (i == listScript.Count - 1))
+                {
+                    Thread.Sleep(2000);
+
+                    try
+                    {
+                        var result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptRun);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+
+                    scriptRun = "";
+                    index = 1;
+                }
+                else
+                {
+                    index++;
+                }
+            }
         }
 
         private void ClearFileLog()
@@ -539,6 +570,11 @@ namespace QLTS.Tool_Khao_Sat
             }
 
             BindingListView1(result);
+        }
+
+        private void fForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
