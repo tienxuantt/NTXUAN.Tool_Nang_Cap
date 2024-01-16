@@ -40,6 +40,7 @@
             this.txtCookie = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.txtRun = new System.Windows.Forms.TextBox();
             this.txtTimer = new System.Windows.Forms.TextBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.checkBoxExecute = new System.Windows.Forms.CheckBox();
@@ -52,7 +53,6 @@
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
             this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
-            this.txtRun = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -188,6 +188,15 @@
             this.panel4.Size = new System.Drawing.Size(1039, 48);
             this.panel4.TabIndex = 3;
             // 
+            // txtRun
+            // 
+            this.txtRun.Location = new System.Drawing.Point(477, 24);
+            this.txtRun.Name = "txtRun";
+            this.txtRun.Size = new System.Drawing.Size(44, 20);
+            this.txtRun.TabIndex = 16;
+            this.txtRun.Text = "50";
+            this.txtRun.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // txtTimer
             // 
             this.txtTimer.Location = new System.Drawing.Point(427, 24);
@@ -218,8 +227,6 @@
             // checkBoxSaveOutput
             // 
             this.checkBoxSaveOutput.AutoSize = true;
-            this.checkBoxSaveOutput.Checked = true;
-            this.checkBoxSaveOutput.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSaveOutput.Location = new System.Drawing.Point(106, 27);
             this.checkBoxSaveOutput.Name = "checkBoxSaveOutput";
             this.checkBoxSaveOutput.Size = new System.Drawing.Size(77, 17);
@@ -319,15 +326,6 @@
             this.btnDeleteMisaQLTS.Text = "Xóa MisaQLTS";
             this.btnDeleteMisaQLTS.UseVisualStyleBackColor = false;
             this.btnDeleteMisaQLTS.Click += new System.EventHandler(this.btnDeleteMisaQLTS_Click);
-            // 
-            // txtRun
-            // 
-            this.txtRun.Location = new System.Drawing.Point(477, 24);
-            this.txtRun.Name = "txtRun";
-            this.txtRun.Size = new System.Drawing.Size(44, 20);
-            this.txtRun.TabIndex = 16;
-            this.txtRun.Text = "50";
-            this.txtRun.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // fForm
             // 
