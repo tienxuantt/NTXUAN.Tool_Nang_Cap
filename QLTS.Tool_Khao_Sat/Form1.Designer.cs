@@ -53,6 +53,7 @@
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
             this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
+            this.checkSaveExcel = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -173,6 +174,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.checkSaveExcel);
             this.panel4.Controls.Add(this.txtRun);
             this.panel4.Controls.Add(this.txtTimer);
             this.panel4.Controls.Add(this.txtSearch);
@@ -190,7 +192,7 @@
             // 
             // txtRun
             // 
-            this.txtRun.Location = new System.Drawing.Point(477, 24);
+            this.txtRun.Location = new System.Drawing.Point(543, 24);
             this.txtRun.Name = "txtRun";
             this.txtRun.Size = new System.Drawing.Size(44, 20);
             this.txtRun.TabIndex = 16;
@@ -199,7 +201,7 @@
             // 
             // txtTimer
             // 
-            this.txtTimer.Location = new System.Drawing.Point(427, 24);
+            this.txtTimer.Location = new System.Drawing.Point(493, 24);
             this.txtTimer.Name = "txtTimer";
             this.txtTimer.Size = new System.Drawing.Size(43, 20);
             this.txtTimer.TabIndex = 15;
@@ -208,7 +210,7 @@
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(293, 24);
+            this.txtSearch.Location = new System.Drawing.Point(359, 24);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(127, 20);
             this.txtSearch.TabIndex = 14;
@@ -217,7 +219,7 @@
             // checkBoxExecute
             // 
             this.checkBoxExecute.AutoSize = true;
-            this.checkBoxExecute.Location = new System.Drawing.Point(189, 27);
+            this.checkBoxExecute.Location = new System.Drawing.Point(255, 27);
             this.checkBoxExecute.Name = "checkBoxExecute";
             this.checkBoxExecute.Size = new System.Drawing.Size(98, 17);
             this.checkBoxExecute.TabIndex = 13;
@@ -327,6 +329,16 @@
             this.btnDeleteMisaQLTS.UseVisualStyleBackColor = false;
             this.btnDeleteMisaQLTS.Click += new System.EventHandler(this.btnDeleteMisaQLTS_Click);
             // 
+            // checkSaveExcel
+            // 
+            this.checkSaveExcel.AutoSize = true;
+            this.checkSaveExcel.Location = new System.Drawing.Point(183, 27);
+            this.checkSaveExcel.Name = "checkSaveExcel";
+            this.checkSaveExcel.Size = new System.Drawing.Size(72, 17);
+            this.checkSaveExcel.TabIndex = 17;
+            this.checkSaveExcel.Text = "Lưu excel";
+            this.checkSaveExcel.UseVisualStyleBackColor = true;
+            // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -384,6 +396,7 @@
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.TextBox txtTimer;
         private System.Windows.Forms.TextBox txtRun;
+        private System.Windows.Forms.CheckBox checkSaveExcel;
     }
 }
 

@@ -1,6 +1,8 @@
-﻿using QLTS.Tool_Khao_Sat.Model;
+﻿using Newtonsoft.Json.Linq;
+using QLTS.Tool_Khao_Sat.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -98,6 +100,56 @@ namespace QLTS.Tool_Khao_Sat.BL
             }
 
             return result;
+        }
+
+        public async Task<object> ExecuteScriptJson(string tenant_id, string query)
+        {
+            var resultContent = await PostApi(tenant_id, query);
+
+            var response = JsonSerializer.Deserialize<ExecuteResponseJson>(resultContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (response.Status == 0)
+            {
+                throw new Exception("Có lỗi xảy ra");
+            }
+
+            return response.Data;
+        }
+
+        public DataTable ConvertJsonToDataTable(string jsonString)
+        {
+            // Tạo DataTable mới
+            DataTable dataTable = new DataTable();
+
+            // Chuyển đổi chuỗi JSON thành đối tượng JArray
+            JArray jsonArray = JArray.Parse(jsonString);
+
+            // Lấy các tên cột từ đối tượng đầu tiên trong mảng JSON
+            foreach (JToken token in jsonArray[0])
+            {
+                dataTable.Columns.Add(token.Path.Replace("[0].",""), typeof(string));
+            }
+
+            try
+            {
+                // Thêm dữ liệu từ mảng JSON vào DataTable
+                foreach (JObject jsonObject in jsonArray)
+                {
+                    DataRow row = dataTable.NewRow();
+
+                    foreach (JProperty property in jsonObject.Properties())
+                    {
+                        row[property.Name] = property.Value.ToString();
+                    }
+
+                    dataTable.Rows.Add(row);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return dataTable;
         }
 
         // Thực hiện api post dữ liệu

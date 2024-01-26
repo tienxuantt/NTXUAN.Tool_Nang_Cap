@@ -1,4 +1,6 @@
-﻿using QLTS.Tool_Khao_Sat.BL;
+﻿using ClosedXML.Excel;
+using Newtonsoft.Json.Linq;
+using QLTS.Tool_Khao_Sat.BL;
 using QLTS.Tool_Khao_Sat.Model;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,9 @@ namespace QLTS.Tool_Khao_Sat
         private int TotalTenantUpgradeDone = 0;
         private int TotalTenantUpgradeFail = 0;
 
+        private string pathFileExcel = string.Empty;
+        private List<string> listJsonExcel = new List<string>();
+
         // Số thread đang thực hiện
         private int countProcess = 0;
         // Tối đa bao nhiêu thread
@@ -40,9 +45,11 @@ namespace QLTS.Tool_Khao_Sat
         private int numRun = 50;
 
         private bool isSaveOutput = false;
+        private bool isSaveExcel = false;
         private bool isExecuteOutput = false;
 
         private object key = new object();
+        private object key2 = new object();
 
         public fForm()
         {
@@ -215,9 +222,13 @@ namespace QLTS.Tool_Khao_Sat
         // Bắt đầu khảo sát các subject được chọn
         private void StartUpgrade()
         {
+            pathFileExcel = Application.StartupPath + "/Data/FileExcelOutput.xlsx";
+            listJsonExcel = new List<string>();
+
             // Lấy các biến
             isSaveOutput = checkBoxSaveOutput.Checked;
             isExecuteOutput = checkBoxExecute.Checked;
+            isSaveExcel = checkSaveExcel.Checked;
 
             // Lấy ra các subject khảo sát
             tenantsUpgrade = GetListTenantUpgrade();
@@ -269,7 +280,26 @@ namespace QLTS.Tool_Khao_Sat
                 }
             }
 
-            MessageBox.Show("Đã nâng cấp xong", "Thông báo");
+            if (isSaveExcel)
+            {
+                try
+                {
+                    if (listJsonExcel.Count > 0)
+                    {
+                        ExportDataTableToExcel_ClosedXML();
+                    }
+
+                    MessageBox.Show("Xuất excel thành công", "Thông báo");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Xuất excel lỗi");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nâng cấp thành công", "Thông báo");
+            }
         }
 
         // Cập nhật lại số tỉnh, số đơn vị lỗi
@@ -358,12 +388,31 @@ namespace QLTS.Tool_Khao_Sat
             Thread thread = new Thread(async () => {
                 try
                 {
-                    var result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptExecute);
+                    List<DataV2> result = new List<DataV2>();
+                    object resultJson = null;
+
+                    if (isSaveExcel)
+                    {
+                        resultJson = await api.ExecuteScriptJson(tenant.tenant_id.ToString(), scriptExecute);
+                    }
+                    else
+                    {
+                        result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptExecute);
+                    }
 
                     // Lưu lại kết quả
                     if (isSaveOutput)
                     {
                         SaveOutputResult(result);
+                    }
+
+                    // Lưu kết quả ra excel
+                    if (isSaveExcel)
+                    {
+                        lock (key2)
+                        {
+                            listJsonExcel.Add(resultJson.ToString());
+                        }
                     }
 
                     // Chạy luôn script
@@ -422,6 +471,49 @@ namespace QLTS.Tool_Khao_Sat
 
             thread.IsBackground = true;
             thread.Start();
+        }
+
+        private void ExportDataTableToExcel_ClosedXML()
+        {
+            string jsonString = listJsonExcel.FirstOrDefault();
+
+            JArray jsonArray = JArray.Parse(jsonString);
+
+            // Tạo một Workbook
+            using (var workbook = new XLWorkbook())
+            {
+                // Tạo một Worksheet
+                var worksheet = workbook.Worksheets.Add("Sheet1");
+
+                // Thêm dòng tiêu đề vào Worksheet
+                int colIndex = 1;
+
+                foreach (JToken token in jsonArray[0])
+                {
+                    worksheet.Cell(1, colIndex).Value = token.Path.Replace("[0].", "");
+                    colIndex++;
+                }
+
+                int rowIndex = 2;
+
+                foreach (var jsonItem in listJsonExcel)
+                {
+                    var jsonArrayItem = JArray.Parse(jsonItem);
+
+                    foreach (JObject jsonObject in jsonArrayItem)
+                    {
+                        colIndex = 1;
+                        foreach (JProperty property in jsonObject.Properties())
+                        {
+                            worksheet.Cell(rowIndex, colIndex++).Value = property.Value.ToString();
+                        }
+                        rowIndex++;
+                    }
+                }
+
+                // Lưu file Excel
+                workbook.SaveAs(pathFileExcel);
+            }
         }
 
         private async Task RunScript(Tenant tenant, List<string> listScript)

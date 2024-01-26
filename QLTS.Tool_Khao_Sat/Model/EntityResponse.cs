@@ -45,6 +45,14 @@ namespace QLTS.Tool_Khao_Sat.Model
         public object Code { get; set; }
     }
 
+    public class ExecuteResponseJson
+    {
+        public int Status { get; set; }
+        public string Message { get; set; }
+        public object Data { get; set; }
+        public object Code { get; set; }
+    }
+
     public class DataV2
     {
         public string Data { get; set; }
