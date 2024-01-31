@@ -155,6 +155,8 @@ namespace QLTS.Tool_Khao_Sat
 
             result = await api.GetTeants();
 
+            result = result.OrderBy(s => s.tenant_code).ToList();
+
             foreach (var item in result)
             {
                 bool valid = true;
@@ -171,6 +173,7 @@ namespace QLTS.Tool_Khao_Sat
                 {
                     item.survey_success = false;
                     item.error = "";
+                    item.tenant_name = item.tenant_name.Replace("Tỉnh ", "");
 
                     tenants.Add(item);
                 }
