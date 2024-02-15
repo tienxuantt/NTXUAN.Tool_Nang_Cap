@@ -478,7 +478,7 @@ namespace QLTS.Tool_Khao_Sat
 
         private void ExportDataTableToExcel_ClosedXML()
         {
-            string jsonString = listJsonExcel.FirstOrDefault();
+            string jsonString = listJsonExcel.FirstOrDefault(s => s.Length > 10);
 
             JArray jsonArray = JArray.Parse(jsonString);
 
