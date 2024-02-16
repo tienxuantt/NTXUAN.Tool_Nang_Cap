@@ -54,6 +54,7 @@
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
             this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
+            this.btnLoadAllTenant = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -117,7 +118,7 @@
             this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStop.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStop.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(789, 359);
+            this.btnStop.Location = new System.Drawing.Point(789, 402);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(254, 36);
             this.btnStop.TabIndex = 7;
@@ -303,7 +304,7 @@
             this.btnUpgrade.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnUpgrade.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnUpgrade.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpgrade.Location = new System.Drawing.Point(789, 265);
+            this.btnUpgrade.Location = new System.Drawing.Point(789, 308);
             this.btnUpgrade.Name = "btnUpgrade";
             this.btnUpgrade.Size = new System.Drawing.Size(254, 36);
             this.btnUpgrade.TabIndex = 8;
@@ -331,7 +332,7 @@
             this.btnDeleteMisaQLTS.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDeleteMisaQLTS.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnDeleteMisaQLTS.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeleteMisaQLTS.Location = new System.Drawing.Point(789, 307);
+            this.btnDeleteMisaQLTS.Location = new System.Drawing.Point(789, 350);
             this.btnDeleteMisaQLTS.Name = "btnDeleteMisaQLTS";
             this.btnDeleteMisaQLTS.Size = new System.Drawing.Size(254, 36);
             this.btnDeleteMisaQLTS.TabIndex = 10;
@@ -339,11 +340,26 @@
             this.btnDeleteMisaQLTS.UseVisualStyleBackColor = false;
             this.btnDeleteMisaQLTS.Click += new System.EventHandler(this.btnDeleteMisaQLTS_Click);
             // 
+            // btnLoadAllTenant
+            // 
+            this.btnLoadAllTenant.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.btnLoadAllTenant.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLoadAllTenant.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnLoadAllTenant.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLoadAllTenant.Location = new System.Drawing.Point(789, 265);
+            this.btnLoadAllTenant.Name = "btnLoadAllTenant";
+            this.btnLoadAllTenant.Size = new System.Drawing.Size(254, 36);
+            this.btnLoadAllTenant.TabIndex = 11;
+            this.btnLoadAllTenant.Text = "Load các tỉnh All";
+            this.btnLoadAllTenant.UseVisualStyleBackColor = false;
+            this.btnLoadAllTenant.Click += new System.EventHandler(this.btnLoadAllTenant_ClickAsync);
+            // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1055, 775);
+            this.Controls.Add(this.btnLoadAllTenant);
             this.Controls.Add(this.btnDeleteMisaQLTS);
             this.Controls.Add(this.btnEditScript);
             this.Controls.Add(this.btnUpgrade);
@@ -397,6 +413,7 @@
         private System.Windows.Forms.TextBox txtTimer;
         private System.Windows.Forms.TextBox txtRun;
         private System.Windows.Forms.CheckBox checkSaveExcel;
+        private System.Windows.Forms.Button btnLoadAllTenant;
     }
 }
 

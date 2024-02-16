@@ -47,6 +47,7 @@ namespace QLTS.Tool_Khao_Sat
         private bool isSaveOutput = false;
         private bool isSaveExcel = false;
         private bool isExecuteOutput = false;
+        private bool isLoadAllTenant = false;
 
         private object key = new object();
         private object key2 = new object();
@@ -169,7 +170,7 @@ namespace QLTS.Tool_Khao_Sat
                     }
                 }
 
-                if (valid)
+                if (valid || isLoadAllTenant)
                 {
                     item.survey_success = false;
                     item.error = "";
@@ -204,6 +205,8 @@ namespace QLTS.Tool_Khao_Sat
 
         private async void btnLoadTeant_Click(object sender, EventArgs e)
         {
+            isLoadAllTenant = false;
+
             try
             {
                 if (!ValidateForm())
@@ -685,6 +688,28 @@ namespace QLTS.Tool_Khao_Sat
         private void fForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private async void btnLoadAllTenant_ClickAsync(object sender, EventArgs e)
+        {
+            isLoadAllTenant = true;
+
+            try
+            {
+                if (!ValidateForm())
+                {
+                    return;
+                }
+
+                // Lấy các tỉnh
+                await GetListTenant();
+
+                BindingListView1();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Có lỗi xảy ra");
+            }
         }
     }
 }
