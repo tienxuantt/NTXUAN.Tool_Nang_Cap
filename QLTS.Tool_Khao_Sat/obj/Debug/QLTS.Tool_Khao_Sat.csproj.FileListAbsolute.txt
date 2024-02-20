@@ -509,4 +509,3 @@ D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\bin\Debug\DocumentFormat.OpenXml.xml
 D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\bin\Debug\ExcelNumberFormat.xml
 D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\bin\Debug\SixLabors.Fonts.xml
 D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\bin\Debug\System.IO.Packaging.xml
-D:\NTXUAN.Tool_Nang_Cap\QLTS.Tool_Khao_Sat\obj\Debug\QLTS.Tool_Khao_Sat.csprojAssemblyReference.cache

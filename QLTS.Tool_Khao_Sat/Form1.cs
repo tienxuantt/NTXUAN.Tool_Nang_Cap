@@ -4,6 +4,7 @@ using QLTS.Tool_Khao_Sat.BL;
 using QLTS.Tool_Khao_Sat.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -295,7 +296,12 @@ namespace QLTS.Tool_Khao_Sat
                         ExportDataTableToExcel_ClosedXML();
                     }
 
-                    MessageBox.Show("Xuất excel thành công", "Thông báo");
+                    DialogResult d = MessageBox.Show("Xuất excel thành công", "Thông báo", MessageBoxButtons.YesNo);
+
+                    if (d == DialogResult.Yes)
+                    {
+                        Process.Start(Application.StartupPath + "/Data");
+                    }
                 }
                 catch (Exception ex)
                 {
