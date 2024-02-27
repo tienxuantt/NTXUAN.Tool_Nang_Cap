@@ -48,6 +48,7 @@ namespace QLTS.Tool_Khao_Sat
         private bool isSaveOutput = false;
         private bool isSaveExcel = false;
         private bool isExecuteOutput = false;
+        private bool isSplitScript = false;
         private bool isLoadAllTenant = false;
 
         private object key = new object();
@@ -236,6 +237,7 @@ namespace QLTS.Tool_Khao_Sat
             isSaveOutput = checkBoxSaveOutput.Checked;
             isExecuteOutput = checkBoxExecute.Checked;
             isSaveExcel = checkSaveExcel.Checked;
+            isSplitScript = checkSplitScript.Checked;
 
             // Lấy ra các subject khảo sát
             tenantsUpgrade = GetListTenantUpgrade();
@@ -403,13 +405,16 @@ namespace QLTS.Tool_Khao_Sat
                     List<DataV2> result = new List<DataV2>();
                     object resultJson = null;
 
-                    if (isSaveExcel)
+                    if (!isSplitScript)
                     {
-                        resultJson = await api.ExecuteScriptJson(tenant.tenant_id.ToString(), scriptExecute);
-                    }
-                    else
-                    {
-                        result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptExecute);
+                        if (isSaveExcel)
+                        {
+                            resultJson = await api.ExecuteScriptJson(tenant.tenant_id.ToString(), scriptExecute);
+                        }
+                        else
+                        {
+                            result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptExecute);
+                        }
                     }
 
                     // Lưu lại kết quả
@@ -435,6 +440,14 @@ namespace QLTS.Tool_Khao_Sat
                         await RunScript(tenant, querys);
                     }
 
+                    // Tách script chạy nhỏ
+                    if (isSplitScript)
+                    {
+                        var querys = GetSplitQuery();
+
+                        await RunScript(tenant, querys);
+                    }
+                    
                     lock (key)
                     {
                         TotalTenantUpgradeDone++;
@@ -483,6 +496,21 @@ namespace QLTS.Tool_Khao_Sat
 
             thread.IsBackground = true;
             thread.Start();
+        }
+
+        private List<string> GetSplitQuery()
+        {
+            List<string> result = new List<string>();
+
+            string[] stringSeparators = new string[] { "\r\n" };
+            string[] lines = scriptExecute.Split(stringSeparators, StringSplitOptions.None);
+
+            foreach (string s in lines)
+            {
+                result.Add(s);
+            }
+
+            return result;
         }
 
         private void ExportDataTableToExcel_ClosedXML()

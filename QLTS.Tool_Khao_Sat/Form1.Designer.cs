@@ -49,12 +49,12 @@
             this.checkBoxAll = new System.Windows.Forms.CheckBox();
             this.labelFail = new System.Windows.Forms.Label();
             this.labelSuccess = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.labelTenantProcess = new System.Windows.Forms.Label();
             this.btnUpgrade = new System.Windows.Forms.Button();
             this.btnEditScript = new System.Windows.Forms.Button();
             this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
             this.btnLoadAllTenant = new System.Windows.Forms.Button();
+            this.checkSplitScript = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -175,6 +175,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.checkSplitScript);
             this.panel4.Controls.Add(this.checkSaveExcel);
             this.panel4.Controls.Add(this.txtRun);
             this.panel4.Controls.Add(this.txtTimer);
@@ -184,7 +185,6 @@
             this.panel4.Controls.Add(this.checkBoxAll);
             this.panel4.Controls.Add(this.labelFail);
             this.panel4.Controls.Add(this.labelSuccess);
-            this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.labelTenantProcess);
             this.panel4.Location = new System.Drawing.Point(4, 7);
             this.panel4.Name = "panel4";
@@ -203,7 +203,7 @@
             // 
             // txtRun
             // 
-            this.txtRun.Location = new System.Drawing.Point(543, 24);
+            this.txtRun.Location = new System.Drawing.Point(731, 24);
             this.txtRun.Name = "txtRun";
             this.txtRun.Size = new System.Drawing.Size(44, 20);
             this.txtRun.TabIndex = 16;
@@ -212,7 +212,7 @@
             // 
             // txtTimer
             // 
-            this.txtTimer.Location = new System.Drawing.Point(493, 24);
+            this.txtTimer.Location = new System.Drawing.Point(681, 24);
             this.txtTimer.Name = "txtTimer";
             this.txtTimer.Size = new System.Drawing.Size(43, 20);
             this.txtTimer.TabIndex = 15;
@@ -221,7 +221,7 @@
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(359, 24);
+            this.txtSearch.Location = new System.Drawing.Point(547, 24);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(127, 20);
             this.txtSearch.TabIndex = 14;
@@ -277,16 +277,6 @@
             this.labelSuccess.Size = new System.Drawing.Size(59, 18);
             this.labelSuccess.TabIndex = 9;
             this.labelSuccess.Text = "Success";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(631, 28);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 18);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Trạng thái";
             // 
             // labelTenantProcess
             // 
@@ -354,6 +344,16 @@
             this.btnLoadAllTenant.UseVisualStyleBackColor = false;
             this.btnLoadAllTenant.Click += new System.EventHandler(this.btnLoadAllTenant_ClickAsync);
             // 
+            // checkSplitScript
+            // 
+            this.checkSplitScript.AutoSize = true;
+            this.checkSplitScript.Location = new System.Drawing.Point(354, 26);
+            this.checkSplitScript.Name = "checkSplitScript";
+            this.checkSplitScript.Size = new System.Drawing.Size(76, 17);
+            this.checkSplitScript.TabIndex = 18;
+            this.checkSplitScript.Text = "Split Script";
+            this.checkSplitScript.UseVisualStyleBackColor = true;
+            // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -399,7 +399,6 @@
         private System.Windows.Forms.Button btnSaveCookie;
         private System.Windows.Forms.Button btnLoadTeant;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label labelTenantProcess;
         private System.Windows.Forms.Label labelFail;
         private System.Windows.Forms.Label labelSuccess;
@@ -414,6 +413,7 @@
         private System.Windows.Forms.TextBox txtRun;
         private System.Windows.Forms.CheckBox checkSaveExcel;
         private System.Windows.Forms.Button btnLoadAllTenant;
+        private System.Windows.Forms.CheckBox checkSplitScript;
     }
 }
 
