@@ -745,5 +745,63 @@ namespace QLTS.Tool_Khao_Sat
                 MessageBox.Show(ex.Message, "Có lỗi xảy ra");
             }
         }
+
+        private async void btnTrace_Click(object sender, EventArgs e)
+        {
+            await TraceData(false, Script.ScriptStartTrace);
+        }
+
+        private async void btnStopTrace_Click(object sender, EventArgs e)
+        {
+            await TraceData(false, Script.ScriptStopTrace);
+        }
+
+        private async void btnResultTrace_Click(object sender, EventArgs e)
+        {
+            await TraceData(true, Script.ScriptGetResultTrace);
+        }
+
+        private async Task TraceData(bool IsGetResult, string ScriptTrace)
+        {
+            string filePath = Application.StartupPath + "/Data/ResultTrace.txt";
+
+            if (!ValidateForm())
+            {
+                return;
+            }
+
+            // Xóa file cũ
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            // Lấy ra các subject khảo sát
+            tenantsUpgrade = GetListTenantUpgrade();
+
+            if (tenantsUpgrade.Count > 0)
+            {
+                try
+                {
+                    var tenant = tenantsUpgrade.FirstOrDefault();
+
+                    List<DataV2> result = await api.ExecuteScript(tenant.tenant_id.ToString(), ScriptTrace);
+
+                    if (IsGetResult && result.Count > 0)
+                    {
+                        foreach (var item in result)
+                        {
+                            api.WriteLog(string.Format("{0} \n", item.Data), filePath);
+                        }
+
+                        Process.Start(Application.StartupPath + "/Data");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Có lỗi xảy ra");
+                }
+            }
+        }
     }
 }

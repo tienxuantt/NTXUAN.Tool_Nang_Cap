@@ -40,6 +40,7 @@
             this.txtCookie = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.checkSplitScript = new System.Windows.Forms.CheckBox();
             this.checkSaveExcel = new System.Windows.Forms.CheckBox();
             this.txtRun = new System.Windows.Forms.TextBox();
             this.txtTimer = new System.Windows.Forms.TextBox();
@@ -54,7 +55,9 @@
             this.btnEditScript = new System.Windows.Forms.Button();
             this.btnDeleteMisaQLTS = new System.Windows.Forms.Button();
             this.btnLoadAllTenant = new System.Windows.Forms.Button();
-            this.checkSplitScript = new System.Windows.Forms.CheckBox();
+            this.btnTrace = new System.Windows.Forms.Button();
+            this.btnStopTrace = new System.Windows.Forms.Button();
+            this.btnResultTrace = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -118,7 +121,7 @@
             this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStop.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStop.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(789, 402);
+            this.btnStop.Location = new System.Drawing.Point(789, 451);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(254, 36);
             this.btnStop.TabIndex = 7;
@@ -190,6 +193,16 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1039, 48);
             this.panel4.TabIndex = 3;
+            // 
+            // checkSplitScript
+            // 
+            this.checkSplitScript.AutoSize = true;
+            this.checkSplitScript.Location = new System.Drawing.Point(354, 26);
+            this.checkSplitScript.Name = "checkSplitScript";
+            this.checkSplitScript.Size = new System.Drawing.Size(76, 17);
+            this.checkSplitScript.TabIndex = 18;
+            this.checkSplitScript.Text = "Split Script";
+            this.checkSplitScript.UseVisualStyleBackColor = true;
             // 
             // checkSaveExcel
             // 
@@ -344,21 +357,56 @@
             this.btnLoadAllTenant.UseVisualStyleBackColor = false;
             this.btnLoadAllTenant.Click += new System.EventHandler(this.btnLoadAllTenant_ClickAsync);
             // 
-            // checkSplitScript
+            // btnTrace
             // 
-            this.checkSplitScript.AutoSize = true;
-            this.checkSplitScript.Location = new System.Drawing.Point(354, 26);
-            this.checkSplitScript.Name = "checkSplitScript";
-            this.checkSplitScript.Size = new System.Drawing.Size(76, 17);
-            this.checkSplitScript.TabIndex = 18;
-            this.checkSplitScript.Text = "Split Script";
-            this.checkSplitScript.UseVisualStyleBackColor = true;
+            this.btnTrace.BackColor = System.Drawing.Color.LightCyan;
+            this.btnTrace.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTrace.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnTrace.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTrace.Location = new System.Drawing.Point(789, 392);
+            this.btnTrace.Name = "btnTrace";
+            this.btnTrace.Size = new System.Drawing.Size(55, 36);
+            this.btnTrace.TabIndex = 12;
+            this.btnTrace.Text = "Trace";
+            this.btnTrace.UseVisualStyleBackColor = false;
+            this.btnTrace.Click += new System.EventHandler(this.btnTrace_Click);
+            // 
+            // btnStopTrace
+            // 
+            this.btnStopTrace.BackColor = System.Drawing.Color.Beige;
+            this.btnStopTrace.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStopTrace.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnStopTrace.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStopTrace.Location = new System.Drawing.Point(850, 392);
+            this.btnStopTrace.Name = "btnStopTrace";
+            this.btnStopTrace.Size = new System.Drawing.Size(101, 36);
+            this.btnStopTrace.TabIndex = 13;
+            this.btnStopTrace.Text = "Stop Trace";
+            this.btnStopTrace.UseVisualStyleBackColor = false;
+            this.btnStopTrace.Click += new System.EventHandler(this.btnStopTrace_Click);
+            // 
+            // btnResultTrace
+            // 
+            this.btnResultTrace.BackColor = System.Drawing.Color.LightGreen;
+            this.btnResultTrace.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnResultTrace.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnResultTrace.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnResultTrace.Location = new System.Drawing.Point(957, 392);
+            this.btnResultTrace.Name = "btnResultTrace";
+            this.btnResultTrace.Size = new System.Drawing.Size(86, 36);
+            this.btnResultTrace.TabIndex = 14;
+            this.btnResultTrace.Text = "Result";
+            this.btnResultTrace.UseVisualStyleBackColor = false;
+            this.btnResultTrace.Click += new System.EventHandler(this.btnResultTrace_Click);
             // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1055, 775);
+            this.Controls.Add(this.btnResultTrace);
+            this.Controls.Add(this.btnStopTrace);
+            this.Controls.Add(this.btnTrace);
             this.Controls.Add(this.btnLoadAllTenant);
             this.Controls.Add(this.btnDeleteMisaQLTS);
             this.Controls.Add(this.btnEditScript);
@@ -414,6 +462,9 @@
         private System.Windows.Forms.CheckBox checkSaveExcel;
         private System.Windows.Forms.Button btnLoadAllTenant;
         private System.Windows.Forms.CheckBox checkSplitScript;
+        private System.Windows.Forms.Button btnTrace;
+        private System.Windows.Forms.Button btnStopTrace;
+        private System.Windows.Forms.Button btnResultTrace;
     }
 }
 
