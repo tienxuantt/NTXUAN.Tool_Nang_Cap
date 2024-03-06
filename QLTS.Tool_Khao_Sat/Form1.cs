@@ -580,7 +580,7 @@ namespace QLTS.Tool_Khao_Sat
 
                 if (index >= numRun || (i == listScript.Count - 1))
                 {
-                    Thread.Sleep(2000);
+                    Thread.Sleep(700);
 
                     try
                     {

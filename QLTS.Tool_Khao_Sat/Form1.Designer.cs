@@ -229,7 +229,7 @@
             this.txtTimer.Name = "txtTimer";
             this.txtTimer.Size = new System.Drawing.Size(43, 20);
             this.txtTimer.TabIndex = 15;
-            this.txtTimer.Text = "200";
+            this.txtTimer.Text = "100";
             this.txtTimer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtSearch
