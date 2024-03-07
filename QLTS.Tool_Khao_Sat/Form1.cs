@@ -803,5 +803,54 @@ namespace QLTS.Tool_Khao_Sat
                 }
             }
         }
+
+        // Lấy store theo tên
+        public async Task GetStoreLatestByName(string storeName)
+        {
+            string scriptGetStore = string.Format("SHOW CREATE PROCEDURE {0};", storeName);
+            string filePath = Application.StartupPath + string.Format("/Data/{0}.txt", storeName);
+
+            // Xóa file cũ
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            var tenant = tenantsUpgrade.FirstOrDefault();
+
+            object resultJson = await api.ExecuteScriptJson(tenant.tenant_id.ToString(), scriptGetStore);
+
+            var jsonArrayItem = JArray.Parse(resultJson.ToString());
+
+            foreach (JObject jsonObject in jsonArrayItem)
+            {
+                foreach (JProperty property in jsonObject.Properties())
+                {
+                    if(property.Name.Equals("Create Procedure"))
+                    {
+                        api.WriteLog(property.Value.ToString(), filePath);
+                    }
+                }
+            }
+        }
+
+        // Tính năng khác
+        private void btnOther_Click(object sender, EventArgs e)
+        {
+            if (!ValidateForm())
+            {
+                return;
+            }
+
+            // Lấy ra các subject khảo sát
+            tenantsUpgrade = GetListTenantUpgrade();
+
+            if (tenantsUpgrade.Count > 0)
+            {
+                var formDetail = new FormDetail(this);
+
+                formDetail.Show();
+            }
+        }
     }
 }

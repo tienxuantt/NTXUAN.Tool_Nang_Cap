@@ -58,6 +58,7 @@
             this.btnTrace = new System.Windows.Forms.Button();
             this.btnStopTrace = new System.Windows.Forms.Button();
             this.btnResultTrace = new System.Windows.Forms.Button();
+            this.btnOther = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -121,7 +122,7 @@
             this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStop.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStop.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(789, 451);
+            this.btnStop.Location = new System.Drawing.Point(789, 500);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(254, 36);
             this.btnStop.TabIndex = 7;
@@ -364,7 +365,7 @@
             this.btnTrace.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTrace.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnTrace.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTrace.Location = new System.Drawing.Point(789, 392);
+            this.btnTrace.Location = new System.Drawing.Point(789, 441);
             this.btnTrace.Name = "btnTrace";
             this.btnTrace.Size = new System.Drawing.Size(55, 36);
             this.btnTrace.TabIndex = 12;
@@ -378,7 +379,7 @@
             this.btnStopTrace.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStopTrace.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnStopTrace.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStopTrace.Location = new System.Drawing.Point(850, 392);
+            this.btnStopTrace.Location = new System.Drawing.Point(850, 441);
             this.btnStopTrace.Name = "btnStopTrace";
             this.btnStopTrace.Size = new System.Drawing.Size(101, 36);
             this.btnStopTrace.TabIndex = 13;
@@ -392,7 +393,7 @@
             this.btnResultTrace.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnResultTrace.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnResultTrace.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnResultTrace.Location = new System.Drawing.Point(957, 392);
+            this.btnResultTrace.Location = new System.Drawing.Point(957, 441);
             this.btnResultTrace.Name = "btnResultTrace";
             this.btnResultTrace.Size = new System.Drawing.Size(86, 36);
             this.btnResultTrace.TabIndex = 14;
@@ -400,11 +401,26 @@
             this.btnResultTrace.UseVisualStyleBackColor = false;
             this.btnResultTrace.Click += new System.EventHandler(this.btnResultTrace_Click);
             // 
+            // btnOther
+            // 
+            this.btnOther.BackColor = System.Drawing.Color.Lavender;
+            this.btnOther.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOther.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnOther.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOther.Location = new System.Drawing.Point(789, 395);
+            this.btnOther.Name = "btnOther";
+            this.btnOther.Size = new System.Drawing.Size(254, 36);
+            this.btnOther.TabIndex = 15;
+            this.btnOther.Text = "Tính năng khác";
+            this.btnOther.UseVisualStyleBackColor = false;
+            this.btnOther.Click += new System.EventHandler(this.btnOther_Click);
+            // 
             // fForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1055, 775);
+            this.Controls.Add(this.btnOther);
             this.Controls.Add(this.btnResultTrace);
             this.Controls.Add(this.btnStopTrace);
             this.Controls.Add(this.btnTrace);
@@ -466,6 +482,7 @@
         private System.Windows.Forms.Button btnTrace;
         private System.Windows.Forms.Button btnStopTrace;
         private System.Windows.Forms.Button btnResultTrace;
+        private System.Windows.Forms.Button btnOther;
     }
 }
 
