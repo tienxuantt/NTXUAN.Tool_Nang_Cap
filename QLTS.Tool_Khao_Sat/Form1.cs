@@ -679,16 +679,6 @@ namespace QLTS.Tool_Khao_Sat
             {
                 string scriptExe = string.Format(Script.ScriptDeleteUser_Authen, tenantFocus.tenant_id.ToString());
 
-                // Nếu chưa có thì lấy tenant authen
-                if(tenant_authen == null)
-                {
-                    List<Tenant> listTenant = new List<Tenant>();
-
-                    listTenant = await api.GetTeants();
-
-                    tenant_authen = listTenant.FirstOrDefault(s => s.tenant_code.Contains("authen"));
-                }
-
                 if (tenant_authen != null)
                 {
                     var result = await api.ExecuteScript(tenant_authen.tenant_id.ToString(), scriptExe);
@@ -696,10 +686,11 @@ namespace QLTS.Tool_Khao_Sat
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message, "Có lỗi xảy ra");
             }
         }
 
-        private void btnDeleteMisaQLTS_Click(object sender, EventArgs e)
+        private async void btnDeleteMisaQLTS_Click(object sender, EventArgs e)
         {
             isDeleteMisaQLTS = true;
             upgradeActive = true;
@@ -709,7 +700,24 @@ namespace QLTS.Tool_Khao_Sat
             {
                 return;
             }
-            
+
+            try
+            {
+                // Nếu chưa có thì lấy tenant authen
+                if (tenant_authen == null)
+                {
+                    List<Tenant> listTenant = new List<Tenant>();
+
+                    listTenant = await api.GetTeants();
+
+                    tenant_authen = listTenant.FirstOrDefault(s => s.tenant_code.Contains("authen"));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Có lỗi xảy ra");
+            }
+
             StartUpgrade();
         }
 
