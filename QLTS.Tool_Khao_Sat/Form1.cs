@@ -29,6 +29,8 @@ namespace QLTS.Tool_Khao_Sat
 
         private List<Tenant> tenantsUpgrade = new List<Tenant>();
 
+        private Tenant tenant_authen = null;
+
         private int TotalTenantUpgrade = 0;
         private int TotalTenantUpgradeSuccess = 0;
 
@@ -50,6 +52,7 @@ namespace QLTS.Tool_Khao_Sat
         private bool isExecuteOutput = false;
         private bool isSplitScript = false;
         private bool isLoadAllTenant = false;
+        private bool isDeleteMisaQLTS = false;
 
         private object key = new object();
         private object key2 = new object();
@@ -447,6 +450,12 @@ namespace QLTS.Tool_Khao_Sat
 
                         await RunScript(tenant, querys);
                     }
+
+                    // Xóa trên DB authen
+                    if (isDeleteMisaQLTS)
+                    {
+                        await DeleteMisaQlts(tenant);
+                    }
                     
                     lock (key)
                     {
@@ -633,6 +642,7 @@ namespace QLTS.Tool_Khao_Sat
 
         private void btnUpgrade_Click(object sender, EventArgs e)
         {
+            isDeleteMisaQLTS = false;
             upgradeActive = true;
 
             if (!ValidateForm(true))
@@ -663,19 +673,25 @@ namespace QLTS.Tool_Khao_Sat
             SetSelectedAll(checkBoxAll.Checked);
         }
 
-        private async Task DeleteMisaQlts()
+        private async Task DeleteMisaQlts(Tenant tenantFocus)
         {
             try
             {
-                List<Tenant> listTenant = new List<Tenant>();
+                string scriptExe = string.Format(Script.ScriptDeleteUser_Authen, tenantFocus.tenant_id.ToString());
 
-                listTenant = await api.GetTeants();
-
-                var authen = listTenant.FirstOrDefault(s => s.tenant_code.Contains("authen"));
-
-                if (authen != null)
+                // Nếu chưa có thì lấy tenant authen
+                if(tenant_authen == null)
                 {
-                    var result = await api.ExecuteScript(authen.tenant_id.ToString(), Script.ScriptDeleteUser_Authen);
+                    List<Tenant> listTenant = new List<Tenant>();
+
+                    listTenant = await api.GetTeants();
+
+                    tenant_authen = listTenant.FirstOrDefault(s => s.tenant_code.Contains("authen"));
+                }
+
+                if (tenant_authen != null)
+                {
+                    var result = await api.ExecuteScript(tenant_authen.tenant_id.ToString(), scriptExe);
                 }
             }
             catch (Exception ex)
@@ -685,6 +701,7 @@ namespace QLTS.Tool_Khao_Sat
 
         private void btnDeleteMisaQLTS_Click(object sender, EventArgs e)
         {
+            isDeleteMisaQLTS = true;
             upgradeActive = true;
             scriptExecute = Script.ScriptDeleteUser;
 
@@ -692,14 +709,7 @@ namespace QLTS.Tool_Khao_Sat
             {
                 return;
             }
-
-            Thread thread = new Thread(async () => {
-                await DeleteMisaQlts();
-            });
-
-            thread.IsBackground = true;
-            thread.Start();
-
+            
             StartUpgrade();
         }
 
