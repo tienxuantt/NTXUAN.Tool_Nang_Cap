@@ -46,7 +46,6 @@
             this.txtTimer = new System.Windows.Forms.TextBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.checkBoxExecute = new System.Windows.Forms.CheckBox();
-            this.checkBoxSaveOutput = new System.Windows.Forms.CheckBox();
             this.checkBoxAll = new System.Windows.Forms.CheckBox();
             this.labelFail = new System.Windows.Forms.Label();
             this.labelSuccess = new System.Windows.Forms.Label();
@@ -185,7 +184,6 @@
             this.panel4.Controls.Add(this.txtTimer);
             this.panel4.Controls.Add(this.txtSearch);
             this.panel4.Controls.Add(this.checkBoxExecute);
-            this.panel4.Controls.Add(this.checkBoxSaveOutput);
             this.panel4.Controls.Add(this.checkBoxAll);
             this.panel4.Controls.Add(this.labelFail);
             this.panel4.Controls.Add(this.labelSuccess);
@@ -198,7 +196,7 @@
             // checkSplitScript
             // 
             this.checkSplitScript.AutoSize = true;
-            this.checkSplitScript.Location = new System.Drawing.Point(354, 26);
+            this.checkSplitScript.Location = new System.Drawing.Point(287, 26);
             this.checkSplitScript.Name = "checkSplitScript";
             this.checkSplitScript.Size = new System.Drawing.Size(76, 17);
             this.checkSplitScript.TabIndex = 18;
@@ -208,7 +206,7 @@
             // checkSaveExcel
             // 
             this.checkSaveExcel.AutoSize = true;
-            this.checkSaveExcel.Location = new System.Drawing.Point(183, 27);
+            this.checkSaveExcel.Location = new System.Drawing.Point(210, 26);
             this.checkSaveExcel.Name = "checkSaveExcel";
             this.checkSaveExcel.Size = new System.Drawing.Size(72, 17);
             this.checkSaveExcel.TabIndex = 17;
@@ -236,31 +234,21 @@
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(547, 24);
+            this.txtSearch.Location = new System.Drawing.Point(535, 24);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(127, 20);
+            this.txtSearch.Size = new System.Drawing.Size(139, 20);
             this.txtSearch.TabIndex = 14;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // checkBoxExecute
             // 
             this.checkBoxExecute.AutoSize = true;
-            this.checkBoxExecute.Location = new System.Drawing.Point(255, 27);
+            this.checkBoxExecute.Location = new System.Drawing.Point(106, 27);
             this.checkBoxExecute.Name = "checkBoxExecute";
             this.checkBoxExecute.Size = new System.Drawing.Size(98, 17);
             this.checkBoxExecute.TabIndex = 13;
             this.checkBoxExecute.Text = "Execute output";
             this.checkBoxExecute.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxSaveOutput
-            // 
-            this.checkBoxSaveOutput.AutoSize = true;
-            this.checkBoxSaveOutput.Location = new System.Drawing.Point(106, 27);
-            this.checkBoxSaveOutput.Name = "checkBoxSaveOutput";
-            this.checkBoxSaveOutput.Size = new System.Drawing.Size(77, 17);
-            this.checkBoxSaveOutput.TabIndex = 12;
-            this.checkBoxSaveOutput.Text = "Lưu output";
-            this.checkBoxSaveOutput.UseVisualStyleBackColor = true;
             // 
             // checkBoxAll
             // 
@@ -470,7 +458,6 @@
         private System.Windows.Forms.Button btnUpgrade;
         private System.Windows.Forms.Button btnEditScript;
         private System.Windows.Forms.CheckBox checkBoxAll;
-        private System.Windows.Forms.CheckBox checkBoxSaveOutput;
         private System.Windows.Forms.CheckBox checkBoxExecute;
         private System.Windows.Forms.Button btnDeleteMisaQLTS;
         private System.Windows.Forms.TextBox txtSearch;

@@ -47,7 +47,6 @@ namespace QLTS.Tool_Khao_Sat
         private int timer = 200;
         private int numRun = 50;
 
-        private bool isSaveOutput = false;
         private bool isSaveExcel = false;
         private bool isExecuteOutput = false;
         private bool isSplitScript = false;
@@ -237,7 +236,6 @@ namespace QLTS.Tool_Khao_Sat
             listJsonExcel = new List<string>();
 
             // Lấy các biến
-            isSaveOutput = checkBoxSaveOutput.Checked;
             isExecuteOutput = checkBoxExecute.Checked;
             isSaveExcel = checkSaveExcel.Checked;
             isSplitScript = checkSplitScript.Checked;
@@ -292,7 +290,7 @@ namespace QLTS.Tool_Khao_Sat
                 }
             }
 
-            if (isSaveExcel)
+            if (isSaveExcel && listJsonExcel.Count > 0)
             {
                 try
                 {
@@ -410,7 +408,7 @@ namespace QLTS.Tool_Khao_Sat
 
                     if (!isSplitScript)
                     {
-                        if (isSaveExcel)
+                        if (isSaveExcel && !isExecuteOutput)
                         {
                             resultJson = await api.ExecuteScriptJson(tenant.tenant_id.ToString(), scriptExecute);
                         }
@@ -420,14 +418,8 @@ namespace QLTS.Tool_Khao_Sat
                         }
                     }
 
-                    // Lưu lại kết quả
-                    if (isSaveOutput)
-                    {
-                        SaveOutputResult(result);
-                    }
-
                     // Lưu kết quả ra excel
-                    if (isSaveExcel)
+                    if (isSaveExcel && resultJson != null)
                     {
                         lock (key2)
                         {
@@ -582,6 +574,13 @@ namespace QLTS.Tool_Khao_Sat
         {
             int index = 1;
             string scriptRun = "";
+            object resultJson = null;
+
+            // Nếu xuất excel thì từng dòng
+            if (isSaveExcel)
+            {
+                numRun = 1;
+            }
 
             for (int i = 0; i < listScript.Count; i++)
             {
@@ -589,11 +588,23 @@ namespace QLTS.Tool_Khao_Sat
 
                 if (index >= numRun || (i == listScript.Count - 1))
                 {
-                    Thread.Sleep(700);
-
                     try
                     {
-                        var result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptRun);
+                        if (isSaveExcel)
+                        {
+                            Thread.Sleep(50);
+                            resultJson = await api.ExecuteScriptJson(tenant.tenant_id.ToString(), scriptRun);
+
+                            lock (key2)
+                            {
+                                listJsonExcel.Add(resultJson.ToString());
+                            }
+                        }
+                        else
+                        {
+                            Thread.Sleep(500);
+                            resultJson = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptRun);
+                        }
                     }
                     catch (Exception ex)
                     {
