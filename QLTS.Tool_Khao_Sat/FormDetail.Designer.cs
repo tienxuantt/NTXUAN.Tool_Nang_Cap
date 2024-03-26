@@ -30,6 +30,8 @@
         {
             this.txtStoreName = new System.Windows.Forms.TextBox();
             this.btnGetStore = new System.Windows.Forms.Button();
+            this.btnGetData = new System.Windows.Forms.Button();
+            this.txtOrganID = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtStoreName
@@ -50,11 +52,31 @@
             this.btnGetStore.UseVisualStyleBackColor = false;
             this.btnGetStore.Click += new System.EventHandler(this.btnGetStore_Click);
             // 
+            // btnGetData
+            // 
+            this.btnGetData.BackColor = System.Drawing.Color.Thistle;
+            this.btnGetData.Location = new System.Drawing.Point(404, 66);
+            this.btnGetData.Name = "btnGetData";
+            this.btnGetData.Size = new System.Drawing.Size(115, 29);
+            this.btnGetData.TabIndex = 3;
+            this.btnGetData.Text = "Lấy dữ liệu";
+            this.btnGetData.UseVisualStyleBackColor = false;
+            this.btnGetData.Click += new System.EventHandler(this.btnGetData_Click);
+            // 
+            // txtOrganID
+            // 
+            this.txtOrganID.Location = new System.Drawing.Point(29, 68);
+            this.txtOrganID.Name = "txtOrganID";
+            this.txtOrganID.Size = new System.Drawing.Size(369, 25);
+            this.txtOrganID.TabIndex = 2;
+            // 
             // FormDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(546, 114);
+            this.ClientSize = new System.Drawing.Size(538, 117);
+            this.Controls.Add(this.btnGetData);
+            this.Controls.Add(this.txtOrganID);
             this.Controls.Add(this.btnGetStore);
             this.Controls.Add(this.txtStoreName);
             this.Font = new System.Drawing.Font("Roboto Slab", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -72,5 +94,7 @@
 
         private System.Windows.Forms.TextBox txtStoreName;
         private System.Windows.Forms.Button btnGetStore;
+        private System.Windows.Forms.Button btnGetData;
+        private System.Windows.Forms.TextBox txtOrganID;
     }
 }

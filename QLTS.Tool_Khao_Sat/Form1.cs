@@ -6,8 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -232,7 +234,7 @@ namespace QLTS.Tool_Khao_Sat
         // Bắt đầu khảo sát các subject được chọn
         private void StartUpgrade()
         {
-            pathFileExcel = Application.StartupPath + "/Data/FileExcelOutput.xlsx";
+            pathFileExcel = Application.StartupPath + "/Data/DataExcel/FileExcelOutput.xlsx";
             listJsonExcel = new List<string>();
 
             // Lấy các biến
@@ -303,7 +305,7 @@ namespace QLTS.Tool_Khao_Sat
 
                     if (d == DialogResult.Yes)
                     {
-                        Process.Start(Application.StartupPath + "/Data");
+                        Process.Start(Application.StartupPath + "/Data/DataExcel");
                     }
                 }
                 catch (Exception ex)
@@ -837,7 +839,7 @@ namespace QLTS.Tool_Khao_Sat
         public async Task GetStoreLatestByName(string storeName)
         {
             string scriptGetStore = string.Format("SHOW CREATE PROCEDURE {0};", storeName);
-            string filePath = Application.StartupPath + string.Format("/Data/{0}.txt", storeName);
+            string filePath = Application.StartupPath + string.Format("/Data/Store/{0}.txt", storeName);
 
             // Xóa file cũ
             if (File.Exists(filePath))
@@ -880,6 +882,198 @@ namespace QLTS.Tool_Khao_Sat
 
                 formDetail.Show();
             }
+        }
+
+        public async Task GetDataByOrganizationID(string organizationID)
+        {
+            List<TableInfo> listTable = TableBackup.listTable;
+
+            // Lấy các bảng biểu
+            foreach (var item in listTable)
+            {
+                Thread thread = new Thread(async () => {
+                    try
+                    {
+                        await GetDataByTableName(organizationID, item.TableName, item.Script);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                });
+
+                thread.IsBackground = true;
+                thread.Start();
+            }
+        }
+
+        public async Task GetDataByTableName(string organID, string tableName, string scriptTable)
+        {
+            string result = string.Empty;
+            string queryColumns = $"SHOW COLUMNS FROM {tableName};";
+            string queryValues = string.Format(scriptTable, tableName, organID);
+            string filePath = Application.StartupPath + string.Format("/Data/DataBackup/{0}.txt", tableName);
+
+            Dictionary<string, string> columnDataTypes = new Dictionary<string, string>();
+
+            // Tỉnh đang thao tác
+            var tenant = tenantsUpgrade.FirstOrDefault();
+
+            // Lấy các cột
+            object resultJson = await api.ExecuteScriptJson(tenant.tenant_id.ToString(), queryColumns);
+            var jsonArrayItem = JArray.Parse(resultJson.ToString());
+
+            foreach (JObject jsonObject in jsonArrayItem)
+            {
+                string columnName = jsonObject.Property("Field").Value.ToString();
+                string columnType = jsonObject.Property("Type").Value.ToString();
+
+                columnDataTypes[columnName] = columnType;
+            }
+
+            // Tạo câu lệnh SQL INSERT
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.AppendFormat("TRUNCATE TABLE {0}; \nINSERT INTO {1} (", tableName, tableName);
+
+            // Thêm tên cột vào câu lệnh SQL
+            foreach (var column in columnDataTypes)
+            {
+                sqlBuilder.AppendFormat("{0}", column.Key);
+                if (column.Key != columnDataTypes.Keys.Last())
+                    sqlBuilder.Append(", ");
+            }
+
+            sqlBuilder.Append(")\nVALUES (");
+
+            // Lấy dữ liệu
+            resultJson = await api.ExecuteScriptJson(tenant.tenant_id.ToString(), queryValues);
+            jsonArrayItem = JArray.Parse(resultJson.ToString());
+
+            int index = 0;
+
+            foreach (JObject jsonObject in jsonArrayItem)
+            {
+                index++;
+
+                // Thêm giá trị vào câu lệnh SQL
+                foreach (var column in columnDataTypes)
+                {
+                    var valueOrigin = jsonObject.Property(column.Key).Value;
+                    string value = FormatValue(valueOrigin, column.Value);
+
+                    sqlBuilder.Append(value);
+
+                    if (column.Key != columnDataTypes.Keys.Last())
+                        sqlBuilder.Append(", ");
+                }
+
+                if(index == jsonArrayItem.Count)
+                {
+                    sqlBuilder.Append(");\n");
+                }
+                else
+                {
+                    sqlBuilder.Append("),\n(");
+                }
+            }
+
+            result = sqlBuilder.ToString();
+
+            // Xóa file cũ
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            api.WriteLog(result, filePath);
+        }
+
+        private string FormatValue(object value, string columnType)
+        {
+            string formattedValue = "";
+
+            if (value != DBNull.Value)
+            {
+                switch (columnType.ToLower())
+                {
+                    case "int":
+                    case "tinyint":
+                    case "smallint":
+                    case "mediumint":
+                    case "bigint":
+                    case "decimal":
+                    case "decimal(19,4)":
+                    case "numeric":
+                    case "float":
+                    case "double":
+                    case "bit(1)":
+                        formattedValue = value.ToString();
+
+                        if (string.IsNullOrEmpty(formattedValue))
+                        {
+                            formattedValue = "0";
+                        }
+                        break;
+                    case "date":
+                    case "time":
+                    case "datetime":
+                    case "timestamp":
+                    case "year":
+                        try
+                        {
+                            DateTime date = DateTime.Parse(value.ToString());
+                            formattedValue = $"'{date.ToString("yyyy-MM-dd HH:mm:ss")}'";
+                        }
+                        catch (Exception)
+                        {
+                            formattedValue = "NULL";
+                        }
+                        
+                        break;
+                    case "char":
+                    case "varchar":
+                    case "varchar(36)":
+                    case "tinytext":
+                    case "text":
+                    case "mediumtext":
+                    case "longtext":
+                    case "enum":
+                    case "set":
+                    case "binary":
+                    case "varbinary":
+                    case "tinyblob":
+                    case "mediumblob":
+                    case "blob":
+                    case "longblob":
+                        formattedValue = $"'{value.ToString().Replace("'", "''")}'";
+                        break;
+                    default:
+                        if (columnType.ToLower().Contains("decimal"))
+                        {
+                            formattedValue = value.ToString();
+
+                            if (string.IsNullOrEmpty(formattedValue))
+                            {
+                                formattedValue = "0";
+                            }
+                        }
+                        else
+                        {
+                            formattedValue = $"'{value.ToString().Replace("'", "''")}'";
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                formattedValue = "NULL";
+            }
+
+            if (string.IsNullOrEmpty(formattedValue) || formattedValue.Equals("''"))
+            {
+                formattedValue = "NULL";
+            }
+
+            return formattedValue;
         }
     }
 }

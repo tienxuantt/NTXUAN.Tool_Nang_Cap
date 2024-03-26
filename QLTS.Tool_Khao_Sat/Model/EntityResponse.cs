@@ -57,4 +57,16 @@ namespace QLTS.Tool_Khao_Sat.Model
     {
         public string Data { get; set; }
     }
+
+    public class TableInfo
+    {
+        public TableInfo(string table, string script)
+        {
+            TableName = table;
+            Script = script;
+        }
+
+        public string TableName { get; set; }
+        public string Script { get; set; }
+    }
 }

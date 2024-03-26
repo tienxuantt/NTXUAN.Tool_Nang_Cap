@@ -1,0 +1,6 @@
+TRUNCATE TABLE convert_circular; 
+INSERT INTO convert_circular (convert_circular_id, convert_circular_name, effect_year, sort, description, is_data_convert, is_circular, is_active, from_circular)
+VALUES (0, 'Quyết định 32', 2014, 0, 'Năm bắt đầu hiệu lực của quyết định 32', 1, 0, 1, 0),
+(1, 'Thông tư 162', 2015, 1, 'Năm bắt đầu hiệu lực của thông tư 162', 1, 1, 1, 0),
+(3, 'Thông tư 45', 2018, 3, 'Năm bắt đầu hiệu lực của thông tư 45', 1, 1, 1, 0),
+(4, 'Quyết định 09/2020/QĐ-UBND của tỉnh Tuyên Quang ', 2022, 4, 'Năm bắt đầu hiệu lực của Quyết định 09/2020/QĐ-UBND của tỉnh Tuyên Quang ', 0, 0, 1, 0);
