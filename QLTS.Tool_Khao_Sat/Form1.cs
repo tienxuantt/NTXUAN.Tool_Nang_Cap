@@ -45,7 +45,7 @@ namespace QLTS.Tool_Khao_Sat
         // Số thread đang thực hiện
         private int countProcess = 0;
         // Tối đa bao nhiêu thread
-        private int maxProcess = 10;
+        private int maxProcess = 20;
         private int timer = 200;
         private int numRun = 50;
 
