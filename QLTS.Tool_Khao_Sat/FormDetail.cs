@@ -18,7 +18,7 @@ namespace QLTS.Tool_Khao_Sat
         {
             string storeName = txtStoreName.Text;
 
-            if (string.IsNullOrEmpty(storeName))
+            if (!string.IsNullOrEmpty(storeName))
             {
                 try
                 {

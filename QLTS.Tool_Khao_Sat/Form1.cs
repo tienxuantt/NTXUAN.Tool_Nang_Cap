@@ -838,6 +838,7 @@ namespace QLTS.Tool_Khao_Sat
         // Lấy store theo tên
         public async Task GetStoreLatestByName(string storeName)
         {
+            string scriptDrop = string.Format("DROP PROCEDURE IF EXISTS {0};\n", storeName);
             string scriptGetStore = string.Format("SHOW CREATE PROCEDURE {0};", storeName);
             string filePath = Application.StartupPath + string.Format("/Data/Store/{0}.txt", storeName);
 
@@ -859,7 +860,8 @@ namespace QLTS.Tool_Khao_Sat
                 {
                     if(property.Name.Equals("Create Procedure"))
                     {
-                        api.WriteLog(property.Value.ToString(), filePath);
+                        api.WriteLog(scriptDrop, filePath);
+                        api.WriteLog(property.Value.ToString().Replace("DEFINER=`qlts`@`%` ",""), filePath);
                     }
                 }
             }

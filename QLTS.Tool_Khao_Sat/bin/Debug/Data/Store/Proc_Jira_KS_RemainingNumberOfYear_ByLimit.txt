@@ -1,0 +1,62 @@
+DROP PROCEDURE IF EXISTS Proc_Jira_KS_RemainingNumberOfYear_ByLimit;
+CREATE PROCEDURE `Proc_Jira_KS_RemainingNumberOfYear_ByLimit`(IN $Limit int, IN $Type int)
+    SQL SECURITY INVOKER
+BEGIN
+  DECLARE $i int DEFAULT 0;
+  DECLARE $count int DEFAULT 0;
+  DECLARE $fixed_asset_id varchar(36) DEFAULT '';
+  DECLARE $circular_id int DEFAULT 1;
+
+  -- Lấy ra thông tư mới nhất
+  SELECT max(convert_circular_id) INTO $circular_id  FROM convert_circular cc;
+
+  DROP TEMPORARY TABLE IF EXISTS tempFAKS_Remaining_result;
+  CREATE TEMPORARY TABLE tempFAKS_Remaining_result
+  (
+     fixed_asset_id varchar(36)
+  );
+
+  DROP TEMPORARY TABLE IF EXISTS tempFAKS_Remaining;
+  CREATE TEMPORARY TABLE tempFAKS_Remaining
+  SELECT fa.fixed_asset_id
+  FROM fixed_asset fa
+  LEFT JOIN fa_jira_execute fje on fa.fixed_asset_id = fje.fixed_asset_id 
+  WHERE fa.convert_circular_id = $circular_id AND fa.status_id <> 2 and IFNULL(fa.is_parent,0) = 0 AND  fje.fixed_asset_id IS NULL
+  LIMIT $Limit;
+
+  -- Insert vào bảng tạm
+  INSERT fa_jira_execute(fixed_asset_id)
+  SELECT fixed_asset_id 
+  FROM tempFAKS_Remaining fr;
+    
+  SELECT
+    COUNT(1) INTO $count
+  FROM tempFAKS_Remaining;
+
+  WHILE $i < $count DO
+    SELECT
+      fixed_asset_id INTO $fixed_asset_id
+    FROM tempFAKS_Remaining
+    LIMIT $i, 1;
+
+        CALL Proc_Jira_KS_FA_RemainingNumberOfYear($fixed_asset_id, $Type);
+
+    SET $i = $i + 1;
+  END WHILE;
+
+  IF ($Type = 0) THEN
+--         SELECT DATABASE() AS DB, fa.fixed_asset_code, do.organization_code, concat("CALL Proc_Jira_KS_FA_RemainingNumberOfYear('",fa.fixed_asset_id,"',1);") AS Script
+--         FROM tempFAKS_Remaining_result a
+--         INNER JOIN fixed_asset fa ON a.fixed_asset_id = fa.fixed_asset_id
+--         INNER JOIN dic_organization do ON fa.organization_id = do.organization_id
+--         ORDER BY do.organization_code;
+
+            INSERT  jira_fixed_asset_survey(fixed_asset_id)
+            SELECT fixed_asset_id
+            FROM tempFAKS_Remaining_result;
+  end if;
+
+  DROP TEMPORARY TABLE IF EXISTS tempFAKS_Remaining;
+  DROP TEMPORARY TABLE IF EXISTS tempFAKS_Remaining_result;
+
+END
