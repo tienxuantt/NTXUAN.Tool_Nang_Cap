@@ -54,6 +54,7 @@ namespace QLTS.Tool_Khao_Sat
         private bool isSplitScript = false;
         private bool isLoadAllTenant = false;
         private bool isDeleteMisaQLTS = false;
+        private bool isCheckStatusStore = false;
 
         private object key = new object();
         private object key2 = new object();
@@ -206,6 +207,20 @@ namespace QLTS.Tool_Khao_Sat
                 MessageBox.Show("Vui lòng sửa script", "Thông báo");
             }
 
+            return valid;
+        }
+
+        private bool ValidateScriptCheckStore()
+        {
+            bool valid = true;
+
+            if (!scriptExecute.Contains('|'))
+            {
+                valid = false;
+
+                MessageBox.Show("Script sai định dạng!", "Thông báo");
+            }
+            
             return valid;
         }
 
@@ -416,7 +431,10 @@ namespace QLTS.Tool_Khao_Sat
                         }
                         else
                         {
-                            result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptExecute);
+                            if (!isCheckStatusStore)
+                            {
+                                result = await api.ExecuteScript(tenant.tenant_id.ToString(), scriptExecute);
+                            }
                         }
                     }
 
@@ -449,6 +467,12 @@ namespace QLTS.Tool_Khao_Sat
                     if (isDeleteMisaQLTS)
                     {
                         await DeleteMisaQlts(tenant);
+                    }
+
+                    // Kiểm tra store
+                    if (isCheckStatusStore)
+                    {
+                        await CheckStoreLatestByName(tenant.tenant_id.ToString());
                     }
                     
                     lock (key)
@@ -657,6 +681,7 @@ namespace QLTS.Tool_Khao_Sat
         {
             isDeleteMisaQLTS = false;
             upgradeActive = true;
+            isCheckStatusStore = false;
 
             if (!ValidateForm(true))
             {
@@ -707,6 +732,7 @@ namespace QLTS.Tool_Khao_Sat
         {
             isDeleteMisaQLTS = true;
             upgradeActive = true;
+            isCheckStatusStore = false;
             scriptExecute = Script.ScriptDeleteUser;
 
             if (!ValidateForm(true))
@@ -862,6 +888,35 @@ namespace QLTS.Tool_Khao_Sat
                     {
                         api.WriteLog(scriptDrop, filePath);
                         api.WriteLog(property.Value.ToString().Replace("DEFINER=`qlts`@`%` ",""), filePath);
+                    }
+                }
+            }
+        }
+
+        public async Task CheckStoreLatestByName(string tenant_id)
+        {
+            string storeName = scriptExecute.Split('|').First().Trim();
+            string scriptCheck = scriptExecute.Split('|').Last().Trim();
+            string scriptGetStore = string.Format("SHOW CREATE PROCEDURE {0};", storeName);
+
+            object resultJson = await api.ExecuteScriptJson(tenant_id, scriptGetStore);
+
+            var jsonArrayItem = JArray.Parse(resultJson.ToString());
+
+            foreach (JObject jsonObject in jsonArrayItem)
+            {
+                foreach (JProperty property in jsonObject.Properties())
+                {
+                    if (property.Name.Equals("Create Procedure"))
+                    {
+                        if (property.Value.ToString().Contains(scriptCheck))
+                        {
+                            throw new Exception("Mới nhất");
+                        }
+                        else
+                        {
+                            throw new Exception("Store đang bị cũ");
+                        }
                     }
                 }
             }
@@ -1076,6 +1131,25 @@ namespace QLTS.Tool_Khao_Sat
             }
 
             return formattedValue;
+        }
+
+        private void btnCheckStore_Click(object sender, EventArgs e)
+        {
+            isDeleteMisaQLTS = false;
+            upgradeActive = true;
+            isCheckStatusStore = true;
+
+            if (!ValidateForm(true))
+            {
+                return;
+            }
+
+            if (!ValidateScriptCheckStore())
+            {
+                return;
+            }
+
+            StartUpgrade();
         }
     }
 }
