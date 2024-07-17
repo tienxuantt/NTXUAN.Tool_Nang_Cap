@@ -10,6 +10,7 @@ namespace QLTS.Tool_Khao_Sat
     {
         /// <summary>
         /// The main entry point for the application.
+        /// NTXUAN
         /// </summary>
         [STAThread]
         static void Main()
