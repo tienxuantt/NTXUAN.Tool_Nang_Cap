@@ -15,7 +15,7 @@ namespace QLTS.Tool_Khao_Sat
         static void Main()
         {
             Application.EnableVisualStyles();
-
+            // adb
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new fForm());
         }
